@@ -1,0 +1,1251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DistributorDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'DistributorDB.dbo.__Months' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="__Months">
+          <Property Name="MonthNumber" Type="tinyint" />
+          <Property Name="MonthName" Type="varchar" MaxLength="20" />
+        </EntityType>-->
+        <EntityType Name="_Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="OrderDate" Type="datetime" />
+          <Property Name="AgentID" Type="varchar" MaxLength="10" />
+          <Property Name="OrderStatus" Type="varchar" MaxLength="20" />
+          <Property Name="PaymentStatus" Type="varchar" MaxLength="20" />
+          <Property Name="PaymentDate" Type="datetime" />
+          <Property Name="PaymentMethod" Type="varchar" MaxLength="10" />
+          <Property Name="OrderProductTotalBill" Type="money" />
+          <Property Name="OrderDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="_User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="100" />
+          <Property Name="UserEmail" Type="varchar" MaxLength="100" />
+          <Property Name="UserPhone" Type="varchar" MaxLength="13" />
+          <Property Name="UserAddress" Type="varchar" MaxLength="100" />
+          <Property Name="UserDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Agent">
+          <Key>
+            <PropertyRef Name="AgentID" />
+          </Key>
+          <Property Name="AgentID" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AgentAccount">
+          <Key>
+            <PropertyRef Name="AgentACID" />
+          </Key>
+          <Property Name="AgentACID" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="AgentID" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="CartID" />
+          </Key>
+          <Property Name="CartID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CustomerID" Type="varchar" MaxLength="10" />
+          <Property Name="TotalBill" Type="money" />
+          <Property Name="CartDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="CartDetail">
+          <Key>
+            <PropertyRef Name="CartID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="CartID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ProductID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerAccount">
+          <Key>
+            <PropertyRef Name="CustomerACID" />
+          </Key>
+          <Property Name="CustomerACID" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CustomerID" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="DeliveryCustomerReceipt">
+          <Key>
+            <PropertyRef Name="DeliveryCustomerReceiptID" />
+          </Key>
+          <Property Name="DeliveryCustomerReceiptID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CartID" Type="varchar" MaxLength="10" />
+          <Property Name="CustomerName" Type="varchar" MaxLength="20" />
+          <Property Name="CustomerPhone" Type="int" />
+          <Property Name="CustomerAddress" Type="varchar" MaxLength="20" />
+          <Property Name="PaymentMethod" Type="varchar" MaxLength="10" />
+          <Property Name="PaymentData" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="DeliverySlip">
+          <Key>
+            <PropertyRef Name="SlipID" />
+          </Key>
+          <Property Name="SlipID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="OrderID" Type="varchar" MaxLength="10" />
+          <Property Name="DeliveryDate" Type="datetime" />
+          <Property Name="TotalBill" Type="money" />
+          <Property Name="SlipDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="OrderID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ProductID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ProductName" Type="varchar" MaxLength="100" />
+          <Property Name="ProductSize" Type="varchar" MaxLength="20" />
+          <Property Name="ProductUnitSize" Type="varchar" MaxLength="10" />
+          <Property Name="ProductBrand" Type="varchar" MaxLength="100" />
+          <Property Name="ProductOrigin" Type="varchar" MaxLength="50" />
+          <Property Name="ProductQuantity" Type="int" />
+          <Property Name="ProductPrice" Type="money" />
+          <Property Name="ProductDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="StaffID" />
+          </Key>
+          <Property Name="StaffID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Position" Type="varchar" MaxLength="30" />
+          <Property Name="Department" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="StaffAccount">
+          <Key>
+            <PropertyRef Name="StaffACID" />
+          </Key>
+          <Property Name="StaffACID" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="StaffID" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="UserAccount">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserPassword" Type="varchar" MaxLength="50" />
+          <Property Name="Activated" Type="bit" />
+          <Property Name="UserDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="WareHouseReceipt">
+          <Key>
+            <PropertyRef Name="WarehouseReceiptID" />
+          </Key>
+          <Property Name="WarehouseReceiptID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="StaffID" Type="varchar" MaxLength="10" />
+          <Property Name="ImportDate" Type="datetime" />
+          <Property Name="WarehouseTotalBill" Type="money" />
+          <Property Name="WarehouseDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="WareHouseReceiptDetail">
+          <Key>
+            <PropertyRef Name="WareHouseReceiptID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="WareHouseReceiptID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ProductID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+        </EntityType>
+        <Association Name="FK___Order__AgentID__45F365D3">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="_Order" Type="Self._Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="AgentID" />
+            </Principal>
+            <Dependent Role="_Order">
+              <PropertyRef Name="AgentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Agent__AgentID__276EDEB3">
+          <End Role="_User" Type="Self._User" Multiplicity="1" />
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Agent">
+              <PropertyRef Name="AgentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AgentAcco__Agent__31EC6D26">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="1" />
+          <End Role="AgentAccount" Type="Self.AgentAccount" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="AgentAccount">
+              <PropertyRef Name="AgentACID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AgentAcco__Agent__32E0915F">
+          <End Role="_User" Type="Self._User" Multiplicity="0..1" />
+          <End Role="AgentAccount" Type="Self.AgentAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AgentAccount">
+              <PropertyRef Name="AgentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__CustomerID__4F7CD00D">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CartDetai__CartI__52593CB8">
+          <End Role="Cart" Type="Self.Cart" Multiplicity="1" />
+          <End Role="CartDetail" Type="Self.CartDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cart">
+              <PropertyRef Name="CartID" />
+            </Principal>
+            <Dependent Role="CartDetail">
+              <PropertyRef Name="CartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CartDetai__Produ__534D60F1">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="CartDetail" Type="Self.CartDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="CartDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customer__Custom__2A4B4B5E">
+          <End Role="_User" Type="Self._User" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CustomerA__Custo__35BCFE0A">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="1" />
+          <End Role="CustomerAccount" Type="Self.CustomerAccount" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="CustomerAccount">
+              <PropertyRef Name="CustomerACID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CustomerA__Custo__36B12243">
+          <End Role="_User" Type="Self._User" Multiplicity="0..1" />
+          <End Role="CustomerAccount" Type="Self.CustomerAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="CustomerAccount">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DeliveryC__Payme__5629CD9C">
+          <End Role="Cart" Type="Self.Cart" Multiplicity="0..1" />
+          <End Role="DeliveryCustomerReceipt" Type="Self.DeliveryCustomerReceipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cart">
+              <PropertyRef Name="CartID" />
+            </Principal>
+            <Dependent Role="DeliveryCustomerReceipt">
+              <PropertyRef Name="CartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DeliveryS__SlipD__48CFD27E">
+          <End Role="_Order" Type="Self._Order" Multiplicity="0..1" />
+          <End Role="DeliverySlip" Type="Self.DeliverySlip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="_Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="DeliverySlip">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Order__4CA06362">
+          <End Role="_Order" Type="Self._Order" Multiplicity="1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="_Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Produ__4BAC3F29">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Staff__StaffID__2D27B809">
+          <End Role="_User" Type="Self._User" Multiplicity="1" />
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Staff">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StaffAcco__Staff__398D8EEE">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="1" />
+          <End Role="StaffAccount" Type="Self.StaffAccount" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="StaffAccount">
+              <PropertyRef Name="StaffACID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StaffAcco__Staff__3A81B327">
+          <End Role="_User" Type="Self._User" Multiplicity="0..1" />
+          <End Role="StaffAccount" Type="Self.StaffAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="StaffAccount">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WareHouse__Produ__4222D4EF">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="WareHouseReceiptDetail" Type="Self.WareHouseReceiptDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="WareHouseReceiptDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WareHouse__Staff__3F466844">
+          <End Role="_User" Type="Self._User" Multiplicity="0..1" />
+          <End Role="WareHouseReceipt" Type="Self.WareHouseReceipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="WareHouseReceipt">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WareHouse__WareH__4316F928">
+          <End Role="WareHouseReceipt" Type="Self.WareHouseReceipt" Multiplicity="1" />
+          <End Role="WareHouseReceiptDetail" Type="Self.WareHouseReceiptDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WareHouseReceipt">
+              <PropertyRef Name="WarehouseReceiptID" />
+            </Principal>
+            <Dependent Role="WareHouseReceiptDetail">
+              <PropertyRef Name="WareHouseReceiptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DistributorDBModelStoreContainer">
+          <EntitySet Name="_Order" EntityType="Self._Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="_User" EntityType="Self._User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Agent" EntityType="Self.Agent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AgentAccount" EntityType="Self.AgentAccount" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CartDetail" EntityType="Self.CartDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerAccount" EntityType="Self.CustomerAccount" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeliveryCustomerReceipt" EntityType="Self.DeliveryCustomerReceipt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeliverySlip" EntityType="Self.DeliverySlip" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StaffAccount" EntityType="Self.StaffAccount" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAccount" EntityType="Self.UserAccount" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WareHouseReceipt" EntityType="Self.WareHouseReceipt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WareHouseReceiptDetail" EntityType="Self.WareHouseReceiptDetail" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK___Order__AgentID__45F365D3" Association="Self.FK___Order__AgentID__45F365D3">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="_Order" EntitySet="_Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Agent__AgentID__276EDEB3" Association="Self.FK__Agent__AgentID__276EDEB3">
+            <End Role="_User" EntitySet="_User" />
+            <End Role="Agent" EntitySet="Agent" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AgentAcco__Agent__31EC6D26" Association="Self.FK__AgentAcco__Agent__31EC6D26">
+            <End Role="UserAccount" EntitySet="UserAccount" />
+            <End Role="AgentAccount" EntitySet="AgentAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AgentAcco__Agent__32E0915F" Association="Self.FK__AgentAcco__Agent__32E0915F">
+            <End Role="_User" EntitySet="_User" />
+            <End Role="AgentAccount" EntitySet="AgentAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cart__CustomerID__4F7CD00D" Association="Self.FK__Cart__CustomerID__4F7CD00D">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CartDetai__CartI__52593CB8" Association="Self.FK__CartDetai__CartI__52593CB8">
+            <End Role="Cart" EntitySet="Cart" />
+            <End Role="CartDetail" EntitySet="CartDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CartDetai__Produ__534D60F1" Association="Self.FK__CartDetai__Produ__534D60F1">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="CartDetail" EntitySet="CartDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer__Custom__2A4B4B5E" Association="Self.FK__Customer__Custom__2A4B4B5E">
+            <End Role="_User" EntitySet="_User" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CustomerA__Custo__35BCFE0A" Association="Self.FK__CustomerA__Custo__35BCFE0A">
+            <End Role="UserAccount" EntitySet="UserAccount" />
+            <End Role="CustomerAccount" EntitySet="CustomerAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CustomerA__Custo__36B12243" Association="Self.FK__CustomerA__Custo__36B12243">
+            <End Role="_User" EntitySet="_User" />
+            <End Role="CustomerAccount" EntitySet="CustomerAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DeliveryC__Payme__5629CD9C" Association="Self.FK__DeliveryC__Payme__5629CD9C">
+            <End Role="Cart" EntitySet="Cart" />
+            <End Role="DeliveryCustomerReceipt" EntitySet="DeliveryCustomerReceipt" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DeliveryS__SlipD__48CFD27E" Association="Self.FK__DeliveryS__SlipD__48CFD27E">
+            <End Role="_Order" EntitySet="_Order" />
+            <End Role="DeliverySlip" EntitySet="DeliverySlip" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Order__4CA06362" Association="Self.FK__OrderDeta__Order__4CA06362">
+            <End Role="_Order" EntitySet="_Order" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Produ__4BAC3F29" Association="Self.FK__OrderDeta__Produ__4BAC3F29">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Staff__StaffID__2D27B809" Association="Self.FK__Staff__StaffID__2D27B809">
+            <End Role="_User" EntitySet="_User" />
+            <End Role="Staff" EntitySet="Staff" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StaffAcco__Staff__398D8EEE" Association="Self.FK__StaffAcco__Staff__398D8EEE">
+            <End Role="UserAccount" EntitySet="UserAccount" />
+            <End Role="StaffAccount" EntitySet="StaffAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StaffAcco__Staff__3A81B327" Association="Self.FK__StaffAcco__Staff__3A81B327">
+            <End Role="_User" EntitySet="_User" />
+            <End Role="StaffAccount" EntitySet="StaffAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WareHouse__Produ__4222D4EF" Association="Self.FK__WareHouse__Produ__4222D4EF">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="WareHouseReceiptDetail" EntitySet="WareHouseReceiptDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WareHouse__Staff__3F466844" Association="Self.FK__WareHouse__Staff__3F466844">
+            <End Role="_User" EntitySet="_User" />
+            <End Role="WareHouseReceipt" EntitySet="WareHouseReceipt" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WareHouse__WareH__4316F928" Association="Self.FK__WareHouse__WareH__4316F928">
+            <End Role="WareHouseReceipt" EntitySet="WareHouseReceipt" />
+            <End Role="WareHouseReceiptDetail" EntitySet="WareHouseReceiptDetail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DistributorDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="C_Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" Precision="3" />
+          <Property Name="AgentID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="OrderStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentDate" Type="DateTime" Precision="3" />
+          <Property Name="PaymentMethod" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="OrderProductTotalBill" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OrderDeleted" Type="Boolean" />
+          <NavigationProperty Name="Agent" Relationship="Self.FK___Order__AgentID__45F365D3" FromRole="C_Order" ToRole="Agent" />
+          <NavigationProperty Name="DeliverySlips" Relationship="Self.FK__DeliveryS__SlipD__48CFD27E" FromRole="C_Order" ToRole="DeliverySlip" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Order__4CA06362" FromRole="C_Order" ToRole="OrderDetail" />
+        </EntityType>
+        <EntityType Name="C_User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UserEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UserPhone" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="UserAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UserDeleted" Type="Boolean" />
+          <NavigationProperty Name="Agent" Relationship="Self.FK__Agent__AgentID__276EDEB3" FromRole="C_User" ToRole="Agent" />
+          <NavigationProperty Name="AgentAccounts" Relationship="Self.FK__AgentAcco__Agent__32E0915F" FromRole="C_User" ToRole="AgentAccount" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Customer__Custom__2A4B4B5E" FromRole="C_User" ToRole="Customer" />
+          <NavigationProperty Name="CustomerAccounts" Relationship="Self.FK__CustomerA__Custo__36B12243" FromRole="C_User" ToRole="CustomerAccount" />
+          <NavigationProperty Name="Staff" Relationship="Self.FK__Staff__StaffID__2D27B809" FromRole="C_User" ToRole="Staff" />
+          <NavigationProperty Name="StaffAccounts" Relationship="Self.FK__StaffAcco__Staff__3A81B327" FromRole="C_User" ToRole="StaffAccount" />
+          <NavigationProperty Name="WareHouseReceipts" Relationship="Self.FK__WareHouse__Staff__3F466844" FromRole="C_User" ToRole="WareHouseReceipt" />
+        </EntityType>
+        <EntityType Name="Agent">
+          <Key>
+            <PropertyRef Name="AgentID" />
+          </Key>
+          <Property Name="AgentID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="C_Order" Relationship="Self.FK___Order__AgentID__45F365D3" FromRole="Agent" ToRole="C_Order" />
+          <NavigationProperty Name="C_User" Relationship="Self.FK__Agent__AgentID__276EDEB3" FromRole="Agent" ToRole="C_User" />
+        </EntityType>
+        <EntityType Name="AgentAccount">
+          <Key>
+            <PropertyRef Name="AgentACID" />
+          </Key>
+          <Property Name="AgentACID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AgentID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="C_User" Relationship="Self.FK__AgentAcco__Agent__32E0915F" FromRole="AgentAccount" ToRole="C_User" />
+          <NavigationProperty Name="UserAccount" Relationship="Self.FK__AgentAcco__Agent__31EC6D26" FromRole="AgentAccount" ToRole="UserAccount" />
+        </EntityType>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="CartID" />
+          </Key>
+          <Property Name="CartID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="TotalBill" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CartDeleted" Type="Boolean" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Cart__CustomerID__4F7CD00D" FromRole="Cart" ToRole="Customer" />
+          <NavigationProperty Name="CartDetails" Relationship="Self.FK__CartDetai__CartI__52593CB8" FromRole="Cart" ToRole="CartDetail" />
+          <NavigationProperty Name="DeliveryCustomerReceipts" Relationship="Self.FK__DeliveryC__Payme__5629CD9C" FromRole="Cart" ToRole="DeliveryCustomerReceipt" />
+        </EntityType>
+        <EntityType Name="CartDetail">
+          <Key>
+            <PropertyRef Name="CartID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="CartID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProductID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="Cart" Relationship="Self.FK__CartDetai__CartI__52593CB8" FromRole="CartDetail" ToRole="Cart" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__CartDetai__Produ__534D60F1" FromRole="CartDetail" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="C_User" Relationship="Self.FK__Customer__Custom__2A4B4B5E" FromRole="Customer" ToRole="C_User" />
+          <NavigationProperty Name="Carts" Relationship="Self.FK__Cart__CustomerID__4F7CD00D" FromRole="Customer" ToRole="Cart" />
+        </EntityType>
+        <EntityType Name="CustomerAccount">
+          <Key>
+            <PropertyRef Name="CustomerACID" />
+          </Key>
+          <Property Name="CustomerACID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="C_User" Relationship="Self.FK__CustomerA__Custo__36B12243" FromRole="CustomerAccount" ToRole="C_User" />
+          <NavigationProperty Name="UserAccount" Relationship="Self.FK__CustomerA__Custo__35BCFE0A" FromRole="CustomerAccount" ToRole="UserAccount" />
+        </EntityType>
+        <EntityType Name="DeliveryCustomerReceipt">
+          <Key>
+            <PropertyRef Name="DeliveryCustomerReceiptID" />
+          </Key>
+          <Property Name="DeliveryCustomerReceiptID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CartID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerPhone" Type="Int32" />
+          <Property Name="CustomerAddress" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentMethod" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentData" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cart" Relationship="Self.FK__DeliveryC__Payme__5629CD9C" FromRole="DeliveryCustomerReceipt" ToRole="Cart" />
+        </EntityType>
+        <EntityType Name="DeliverySlip">
+          <Key>
+            <PropertyRef Name="SlipID" />
+          </Key>
+          <Property Name="SlipID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="OrderID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DeliveryDate" Type="DateTime" Precision="3" />
+          <Property Name="TotalBill" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SlipDeleted" Type="Boolean" />
+          <NavigationProperty Name="C_Order" Relationship="Self.FK__DeliveryS__SlipD__48CFD27E" FromRole="DeliverySlip" ToRole="C_Order" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="OrderID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProductID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="C_Order" Relationship="Self.FK__OrderDeta__Order__4CA06362" FromRole="OrderDetail" ToRole="C_Order" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__OrderDeta__Produ__4BAC3F29" FromRole="OrderDetail" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ProductSize" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ProductUnitSize" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ProductBrand" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ProductOrigin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ProductQuantity" Type="Int32" />
+          <Property Name="ProductPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ProductDeleted" Type="Boolean" />
+          <NavigationProperty Name="CartDetails" Relationship="Self.FK__CartDetai__Produ__534D60F1" FromRole="Product" ToRole="CartDetail" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Produ__4BAC3F29" FromRole="Product" ToRole="OrderDetail" />
+          <NavigationProperty Name="WareHouseReceiptDetails" Relationship="Self.FK__WareHouse__Produ__4222D4EF" FromRole="Product" ToRole="WareHouseReceiptDetail" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="StaffID" />
+          </Key>
+          <Property Name="StaffID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Position" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Department" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="C_User" Relationship="Self.FK__Staff__StaffID__2D27B809" FromRole="Staff" ToRole="C_User" />
+        </EntityType>
+        <EntityType Name="StaffAccount">
+          <Key>
+            <PropertyRef Name="StaffACID" />
+          </Key>
+          <Property Name="StaffACID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StaffID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="C_User" Relationship="Self.FK__StaffAcco__Staff__3A81B327" FromRole="StaffAccount" ToRole="C_User" />
+          <NavigationProperty Name="UserAccount" Relationship="Self.FK__StaffAcco__Staff__398D8EEE" FromRole="StaffAccount" ToRole="UserAccount" />
+        </EntityType>
+        <EntityType Name="UserAccount">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Activated" Type="Boolean" />
+          <Property Name="UserDeleted" Type="Boolean" />
+          <NavigationProperty Name="AgentAccount" Relationship="Self.FK__AgentAcco__Agent__31EC6D26" FromRole="UserAccount" ToRole="AgentAccount" />
+          <NavigationProperty Name="CustomerAccount" Relationship="Self.FK__CustomerA__Custo__35BCFE0A" FromRole="UserAccount" ToRole="CustomerAccount" />
+          <NavigationProperty Name="StaffAccount" Relationship="Self.FK__StaffAcco__Staff__398D8EEE" FromRole="UserAccount" ToRole="StaffAccount" />
+        </EntityType>
+        <EntityType Name="WareHouseReceipt">
+          <Key>
+            <PropertyRef Name="WarehouseReceiptID" />
+          </Key>
+          <Property Name="WarehouseReceiptID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StaffID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ImportDate" Type="DateTime" Precision="3" />
+          <Property Name="WarehouseTotalBill" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="WarehouseDeleted" Type="Boolean" />
+          <NavigationProperty Name="C_User" Relationship="Self.FK__WareHouse__Staff__3F466844" FromRole="WareHouseReceipt" ToRole="C_User" />
+          <NavigationProperty Name="WareHouseReceiptDetails" Relationship="Self.FK__WareHouse__WareH__4316F928" FromRole="WareHouseReceipt" ToRole="WareHouseReceiptDetail" />
+        </EntityType>
+        <EntityType Name="WareHouseReceiptDetail">
+          <Key>
+            <PropertyRef Name="WareHouseReceiptID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="WareHouseReceiptID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProductID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__WareHouse__Produ__4222D4EF" FromRole="WareHouseReceiptDetail" ToRole="Product" />
+          <NavigationProperty Name="WareHouseReceipt" Relationship="Self.FK__WareHouse__WareH__4316F928" FromRole="WareHouseReceiptDetail" ToRole="WareHouseReceipt" />
+        </EntityType>
+        <Association Name="FK___Order__AgentID__45F365D3">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="C_Order" Type="Self.C_Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="AgentID" />
+            </Principal>
+            <Dependent Role="C_Order">
+              <PropertyRef Name="AgentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DeliveryS__SlipD__48CFD27E">
+          <End Role="C_Order" Type="Self.C_Order" Multiplicity="0..1" />
+          <End Role="DeliverySlip" Type="Self.DeliverySlip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C_Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="DeliverySlip">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Order__4CA06362">
+          <End Role="C_Order" Type="Self.C_Order" Multiplicity="1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C_Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Agent__AgentID__276EDEB3">
+          <End Role="C_User" Type="Self.C_User" Multiplicity="1" />
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="C_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Agent">
+              <PropertyRef Name="AgentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AgentAcco__Agent__32E0915F">
+          <End Role="C_User" Type="Self.C_User" Multiplicity="0..1" />
+          <End Role="AgentAccount" Type="Self.AgentAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AgentAccount">
+              <PropertyRef Name="AgentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customer__Custom__2A4B4B5E">
+          <End Role="C_User" Type="Self.C_User" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="C_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CustomerA__Custo__36B12243">
+          <End Role="C_User" Type="Self.C_User" Multiplicity="0..1" />
+          <End Role="CustomerAccount" Type="Self.CustomerAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="CustomerAccount">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Staff__StaffID__2D27B809">
+          <End Role="C_User" Type="Self.C_User" Multiplicity="1" />
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="C_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Staff">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StaffAcco__Staff__3A81B327">
+          <End Role="C_User" Type="Self.C_User" Multiplicity="0..1" />
+          <End Role="StaffAccount" Type="Self.StaffAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="StaffAccount">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WareHouse__Staff__3F466844">
+          <End Role="C_User" Type="Self.C_User" Multiplicity="0..1" />
+          <End Role="WareHouseReceipt" Type="Self.WareHouseReceipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="WareHouseReceipt">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AgentAcco__Agent__31EC6D26">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="1" />
+          <End Role="AgentAccount" Type="Self.AgentAccount" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="AgentAccount">
+              <PropertyRef Name="AgentACID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__CustomerID__4F7CD00D">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CartDetai__CartI__52593CB8">
+          <End Role="Cart" Type="Self.Cart" Multiplicity="1" />
+          <End Role="CartDetail" Type="Self.CartDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cart">
+              <PropertyRef Name="CartID" />
+            </Principal>
+            <Dependent Role="CartDetail">
+              <PropertyRef Name="CartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DeliveryC__Payme__5629CD9C">
+          <End Role="Cart" Type="Self.Cart" Multiplicity="0..1" />
+          <End Role="DeliveryCustomerReceipt" Type="Self.DeliveryCustomerReceipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cart">
+              <PropertyRef Name="CartID" />
+            </Principal>
+            <Dependent Role="DeliveryCustomerReceipt">
+              <PropertyRef Name="CartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CartDetai__Produ__534D60F1">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="CartDetail" Type="Self.CartDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="CartDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CustomerA__Custo__35BCFE0A">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="1" />
+          <End Role="CustomerAccount" Type="Self.CustomerAccount" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="CustomerAccount">
+              <PropertyRef Name="CustomerACID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Produ__4BAC3F29">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WareHouse__Produ__4222D4EF">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="WareHouseReceiptDetail" Type="Self.WareHouseReceiptDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="WareHouseReceiptDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StaffAcco__Staff__398D8EEE">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="1" />
+          <End Role="StaffAccount" Type="Self.StaffAccount" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="StaffAccount">
+              <PropertyRef Name="StaffACID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WareHouse__WareH__4316F928">
+          <End Role="WareHouseReceipt" Type="Self.WareHouseReceipt" Multiplicity="1" />
+          <End Role="WareHouseReceiptDetail" Type="Self.WareHouseReceiptDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WareHouseReceipt">
+              <PropertyRef Name="WarehouseReceiptID" />
+            </Principal>
+            <Dependent Role="WareHouseReceiptDetail">
+              <PropertyRef Name="WareHouseReceiptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DistributorDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C_Order" EntityType="Self.C_Order" />
+          <EntitySet Name="C_User" EntityType="Self.C_User" />
+          <EntitySet Name="Agents" EntityType="Self.Agent" />
+          <EntitySet Name="AgentAccounts" EntityType="Self.AgentAccount" />
+          <EntitySet Name="Carts" EntityType="Self.Cart" />
+          <EntitySet Name="CartDetails" EntityType="Self.CartDetail" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="CustomerAccounts" EntityType="Self.CustomerAccount" />
+          <EntitySet Name="DeliveryCustomerReceipts" EntityType="Self.DeliveryCustomerReceipt" />
+          <EntitySet Name="DeliverySlips" EntityType="Self.DeliverySlip" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="Staffs" EntityType="Self.Staff" />
+          <EntitySet Name="StaffAccounts" EntityType="Self.StaffAccount" />
+          <EntitySet Name="UserAccounts" EntityType="Self.UserAccount" />
+          <EntitySet Name="WareHouseReceipts" EntityType="Self.WareHouseReceipt" />
+          <EntitySet Name="WareHouseReceiptDetails" EntityType="Self.WareHouseReceiptDetail" />
+          <AssociationSet Name="FK___Order__AgentID__45F365D3" Association="Self.FK___Order__AgentID__45F365D3">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="C_Order" EntitySet="C_Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DeliveryS__SlipD__48CFD27E" Association="Self.FK__DeliveryS__SlipD__48CFD27E">
+            <End Role="C_Order" EntitySet="C_Order" />
+            <End Role="DeliverySlip" EntitySet="DeliverySlips" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Order__4CA06362" Association="Self.FK__OrderDeta__Order__4CA06362">
+            <End Role="C_Order" EntitySet="C_Order" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Agent__AgentID__276EDEB3" Association="Self.FK__Agent__AgentID__276EDEB3">
+            <End Role="C_User" EntitySet="C_User" />
+            <End Role="Agent" EntitySet="Agents" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AgentAcco__Agent__32E0915F" Association="Self.FK__AgentAcco__Agent__32E0915F">
+            <End Role="C_User" EntitySet="C_User" />
+            <End Role="AgentAccount" EntitySet="AgentAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer__Custom__2A4B4B5E" Association="Self.FK__Customer__Custom__2A4B4B5E">
+            <End Role="C_User" EntitySet="C_User" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CustomerA__Custo__36B12243" Association="Self.FK__CustomerA__Custo__36B12243">
+            <End Role="C_User" EntitySet="C_User" />
+            <End Role="CustomerAccount" EntitySet="CustomerAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Staff__StaffID__2D27B809" Association="Self.FK__Staff__StaffID__2D27B809">
+            <End Role="C_User" EntitySet="C_User" />
+            <End Role="Staff" EntitySet="Staffs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StaffAcco__Staff__3A81B327" Association="Self.FK__StaffAcco__Staff__3A81B327">
+            <End Role="C_User" EntitySet="C_User" />
+            <End Role="StaffAccount" EntitySet="StaffAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WareHouse__Staff__3F466844" Association="Self.FK__WareHouse__Staff__3F466844">
+            <End Role="C_User" EntitySet="C_User" />
+            <End Role="WareHouseReceipt" EntitySet="WareHouseReceipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AgentAcco__Agent__31EC6D26" Association="Self.FK__AgentAcco__Agent__31EC6D26">
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+            <End Role="AgentAccount" EntitySet="AgentAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cart__CustomerID__4F7CD00D" Association="Self.FK__Cart__CustomerID__4F7CD00D">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CartDetai__CartI__52593CB8" Association="Self.FK__CartDetai__CartI__52593CB8">
+            <End Role="Cart" EntitySet="Carts" />
+            <End Role="CartDetail" EntitySet="CartDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DeliveryC__Payme__5629CD9C" Association="Self.FK__DeliveryC__Payme__5629CD9C">
+            <End Role="Cart" EntitySet="Carts" />
+            <End Role="DeliveryCustomerReceipt" EntitySet="DeliveryCustomerReceipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CartDetai__Produ__534D60F1" Association="Self.FK__CartDetai__Produ__534D60F1">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="CartDetail" EntitySet="CartDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CustomerA__Custo__35BCFE0A" Association="Self.FK__CustomerA__Custo__35BCFE0A">
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+            <End Role="CustomerAccount" EntitySet="CustomerAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Produ__4BAC3F29" Association="Self.FK__OrderDeta__Produ__4BAC3F29">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WareHouse__Produ__4222D4EF" Association="Self.FK__WareHouse__Produ__4222D4EF">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="WareHouseReceiptDetail" EntitySet="WareHouseReceiptDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StaffAcco__Staff__398D8EEE" Association="Self.FK__StaffAcco__Staff__398D8EEE">
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+            <End Role="StaffAccount" EntitySet="StaffAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WareHouse__WareH__4316F928" Association="Self.FK__WareHouse__WareH__4316F928">
+            <End Role="WareHouseReceipt" EntitySet="WareHouseReceipts" />
+            <End Role="WareHouseReceiptDetail" EntitySet="WareHouseReceiptDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DistributorDBModelStoreContainer" CdmEntityContainer="DistributorDBEntities">
+          <EntitySetMapping Name="C_Order">
+            <EntityTypeMapping TypeName="DistributorDBModel.C_Order">
+              <MappingFragment StoreEntitySet="_Order">
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="AgentID" ColumnName="AgentID" />
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="OrderProductTotalBill" ColumnName="OrderProductTotalBill" />
+                <ScalarProperty Name="OrderDeleted" ColumnName="OrderDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C_User">
+            <EntityTypeMapping TypeName="DistributorDBModel.C_User">
+              <MappingFragment StoreEntitySet="_User">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserPhone" ColumnName="UserPhone" />
+                <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
+                <ScalarProperty Name="UserDeleted" ColumnName="UserDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Agents">
+            <EntityTypeMapping TypeName="DistributorDBModel.Agent">
+              <MappingFragment StoreEntitySet="Agent">
+                <ScalarProperty Name="AgentID" ColumnName="AgentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AgentAccounts">
+            <EntityTypeMapping TypeName="DistributorDBModel.AgentAccount">
+              <MappingFragment StoreEntitySet="AgentAccount">
+                <ScalarProperty Name="AgentACID" ColumnName="AgentACID" />
+                <ScalarProperty Name="AgentID" ColumnName="AgentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Carts">
+            <EntityTypeMapping TypeName="DistributorDBModel.Cart">
+              <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="CartID" ColumnName="CartID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="TotalBill" ColumnName="TotalBill" />
+                <ScalarProperty Name="CartDeleted" ColumnName="CartDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CartDetails">
+            <EntityTypeMapping TypeName="DistributorDBModel.CartDetail">
+              <MappingFragment StoreEntitySet="CartDetail">
+                <ScalarProperty Name="CartID" ColumnName="CartID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="DistributorDBModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerAccounts">
+            <EntityTypeMapping TypeName="DistributorDBModel.CustomerAccount">
+              <MappingFragment StoreEntitySet="CustomerAccount">
+                <ScalarProperty Name="CustomerACID" ColumnName="CustomerACID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeliveryCustomerReceipts">
+            <EntityTypeMapping TypeName="DistributorDBModel.DeliveryCustomerReceipt">
+              <MappingFragment StoreEntitySet="DeliveryCustomerReceipt">
+                <ScalarProperty Name="DeliveryCustomerReceiptID" ColumnName="DeliveryCustomerReceiptID" />
+                <ScalarProperty Name="CartID" ColumnName="CartID" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerPhone" ColumnName="CustomerPhone" />
+                <ScalarProperty Name="CustomerAddress" ColumnName="CustomerAddress" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="PaymentData" ColumnName="PaymentData" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeliverySlips">
+            <EntityTypeMapping TypeName="DistributorDBModel.DeliverySlip">
+              <MappingFragment StoreEntitySet="DeliverySlip">
+                <ScalarProperty Name="SlipID" ColumnName="SlipID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="TotalBill" ColumnName="TotalBill" />
+                <ScalarProperty Name="SlipDeleted" ColumnName="SlipDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="DistributorDBModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetail">
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="DistributorDBModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductSize" ColumnName="ProductSize" />
+                <ScalarProperty Name="ProductUnitSize" ColumnName="ProductUnitSize" />
+                <ScalarProperty Name="ProductBrand" ColumnName="ProductBrand" />
+                <ScalarProperty Name="ProductOrigin" ColumnName="ProductOrigin" />
+                <ScalarProperty Name="ProductQuantity" ColumnName="ProductQuantity" />
+                <ScalarProperty Name="ProductPrice" ColumnName="ProductPrice" />
+                <ScalarProperty Name="ProductDeleted" ColumnName="ProductDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Staffs">
+            <EntityTypeMapping TypeName="DistributorDBModel.Staff">
+              <MappingFragment StoreEntitySet="Staff">
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StaffAccounts">
+            <EntityTypeMapping TypeName="DistributorDBModel.StaffAccount">
+              <MappingFragment StoreEntitySet="StaffAccount">
+                <ScalarProperty Name="StaffACID" ColumnName="StaffACID" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAccounts">
+            <EntityTypeMapping TypeName="DistributorDBModel.UserAccount">
+              <MappingFragment StoreEntitySet="UserAccount">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="Activated" ColumnName="Activated" />
+                <ScalarProperty Name="UserDeleted" ColumnName="UserDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WareHouseReceipts">
+            <EntityTypeMapping TypeName="DistributorDBModel.WareHouseReceipt">
+              <MappingFragment StoreEntitySet="WareHouseReceipt">
+                <ScalarProperty Name="WarehouseReceiptID" ColumnName="WarehouseReceiptID" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="ImportDate" ColumnName="ImportDate" />
+                <ScalarProperty Name="WarehouseTotalBill" ColumnName="WarehouseTotalBill" />
+                <ScalarProperty Name="WarehouseDeleted" ColumnName="WarehouseDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WareHouseReceiptDetails">
+            <EntityTypeMapping TypeName="DistributorDBModel.WareHouseReceiptDetail">
+              <MappingFragment StoreEntitySet="WareHouseReceiptDetail">
+                <ScalarProperty Name="WareHouseReceiptID" ColumnName="WareHouseReceiptID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

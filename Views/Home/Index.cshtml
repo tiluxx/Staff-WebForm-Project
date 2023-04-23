@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+
+    if (Session["StaffID"] == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+}
+
+<div class="row">
+    Homepage
+</div>
