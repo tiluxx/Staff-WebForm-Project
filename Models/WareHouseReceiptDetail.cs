@@ -11,7 +11,9 @@ namespace Agent_WebForm_Prodject.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Configuration;
+    using System.Data.SqlClient;
+
     public partial class WareHouseReceiptDetail
     {
         public string WareHouseReceiptID { get; set; }
@@ -20,5 +22,35 @@ namespace Agent_WebForm_Prodject.Models
     
         public virtual Product Product { get; set; }
         public virtual WareHouseReceipt WareHouseReceipt { get; set; }
+
+        public void AddWarehouseReceiptDetailQuery(
+            string WarehouseReceiptID,
+            string ProductID,
+            int ProductQuantity)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "insert into WarehouseReceiptDetail values ('" +
+                    WarehouseReceiptID +
+                    "', '" + ProductID +
+                    "', " + ProductQuantity + ")";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteWarehouseReceiptDetailQuery(string WarehouseReceiptID, string ProductID = "")
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "delete from WarehouseReceiptDetail where WarehouseReceiptID = '"
+                    + WarehouseReceiptID +
+                    "' and ProductID = '" + ProductID + "'";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

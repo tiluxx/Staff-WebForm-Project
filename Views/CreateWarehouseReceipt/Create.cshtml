@@ -1,0 +1,161 @@
+﻿@using Agent_WebForm_Prodject.Models
+@model Product
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (Session["StaffID"] == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+
+    var countryList = (List<string>)@ViewBag.CountryList;
+}
+<h1>@ViewBag.Message</h1>
+<h3><b>Create Warehouse Receipt</b></h3>
+<div>
+    <h5>Enter incoming products</h5>
+    @using (Html.BeginForm("CreateWarehouseReceiptAsync", "CreateWarehouseReceipt", FormMethod.Post))
+    {
+        <fieldset>
+            <table id="incomingProductsForm" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>Product ID</td>
+                        <td>Product Name</td>
+                        <td>Product Size</td>
+                        <td>Product Unit Size</td>
+                        <td>Brand</td>
+                        <td>Origin</td>
+                        <td>Quantity</td>
+                        <td>Price</td>
+                        <td></td>
+                    </tr>
+                </thead>
+
+                <tr id="tablerow-1">
+                    <td>
+                        <div class="editor-field">
+                            <input class="text-box single-line" name="ProductID[0]" type="text" value="" required="required" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            <input class="text-box single-line" name="ProductName[0]" type="text" value="" required="required" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            <input class="text-box single-line" name="ProductSize[0]" type="text" value="" required="required" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            <select id="ProductUnitSize[0]" name="ProductUnitSize[0]" required="required">
+                                <option value="m">m</option>
+                                <option value="dm">dm</option>
+                                <option value="cm">cm</option>
+                                <option value="mm">mm</option>
+                                <option value="inches">inches</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            <input class="text-box single-line" name="ProductBrand[0]" type="text" value="" required="required" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            <select id="ProductOrigin[0]" name="ProductOrigin[0]" required="required">
+                                @{
+                                    if (countryList != null)
+                                    {
+                                        foreach (string item in countryList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            <input class="text-box single-line" name="ProductQuantity[0]" type="number" value="" required="required" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            <input class="text-box single-line" name="ProductPrice[0]" type="number" value="" required="required" />
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-default" onclick="removeTr(0);">Delete</button>
+                    </td>
+                </tr>
+
+            </table>
+            <div>
+                <button id="addProductBtn" type="button" class="btn btn-default">Add</button>
+            </div>
+            <hr />
+            <div>
+                <input type="submit" value="Create receipt" class="btn btn-primary" />
+            </div>
+        </fieldset>
+    }
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        let counter = 1;
+        $(function () {
+
+            $('#addProductBtn').click(function () {
+                @{
+                    var optionTag = "";
+                    if (countryList != null)
+                    {
+                        foreach (string item in countryList)
+                        {
+                            optionTag += "<option value='" + item + "'>" + item + "</option>";
+                        }
+                    }
+                }
+                let tableRow = "<tr id='tablerow-" + counter + "'>" +
+                    "<td><div class='editor-field'><input class='text-box single-line' name='ProductID[" + counter + "]' type='text' value='' required='required' /></div></td>" +
+                "<td><div class='editor-field'><input class='text-box single-line' name='ProductName[" + counter + "]' type='text' value='' required='required' /></div></td>" +
+                "<td><div class='editor-field'><input class='text-box single-line' name='ProductSize[" + counter + "]' type='text' value='' required='required' /></div></td>" +
+                    "<td><div class='editor-field'>" +
+                    "<select id='ProductUnitSize[" + counter + "] name='ProductUnitSize[" + counter + "]' required='required'>" +
+                    "<option value='m'>m</option>" +
+                    "<option value='dm'>dm</option>" +
+                    "<option value='cm'>cm</option>" +
+                    "<option value='mm'>mm</option>" +
+                    "<option value='inches'>inches</option>" +
+                    "</select></div></td>" +
+                    "<td><div class='editor-field'><input class='text-box single-line' name='ProductBrand[" + counter + "]' type='text' value='' required='required' /></div></td>" +
+                    "<td><div class='editor-field'>" +
+                    "<select id='ProductOrigin[" + counter + "]' name='ProductOrigin[" + counter + "]' required='required'>"
+                let optionTag = @Html.Raw(Json.Encode(optionTag))
+                tableRow += optionTag
+                tableRow += '</select ></div></td> ' +
+                '<td><div class="editor-field"><input class="text-box single-line" name="ProductQuantity[' + counter + ']" type="number" value="" required="required" /></div></td>' +
+                '<td><div class="editor-field"><input class="text-box single-line" name="ProductPrice[' + counter + ']" type="number" value="" required="required" /></div</td>' +
+                '<td><button type="button" class="btn btn-primary" onclick="removeTr(' + counter + ');">Delete</button></td>' +
+                '</tr>'
+                $(tableRow).appendTo('#incomingProductsForm');
+                counter++;
+                return false;
+            });
+        });
+        function removeTr(index) {
+            if (counter > 1) {
+                $('#tablerow-' + index).remove();
+                counter--;
+            }
+            return false;
+        }
+    </script>
+}

@@ -11,7 +11,9 @@ namespace Agent_WebForm_Prodject.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Configuration;
+    using System.Data.SqlClient;
+
     public partial class WareHouseReceipt
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -29,5 +31,127 @@ namespace Agent_WebForm_Prodject.Models
         public virtual C_User C_User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WareHouseReceiptDetail> WareHouseReceiptDetails { get; set; }
+
+        public List<WareHouseReceipt> SelectWarehouseReceiptQuery()
+        {
+            List<WareHouseReceipt> res = new List<WareHouseReceipt>();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("select * from WarehouseReceipt", conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    WareHouseReceipt wareHouseReceipt = new WareHouseReceipt();
+                    wareHouseReceipt.WarehouseReceiptID = dr["WarehouseReceiptID"].ToString();
+                    wareHouseReceipt.StaffID = dr["StaffID"].ToString();
+                    wareHouseReceipt.ImportDate = Convert.ToDateTime(dr["ImportDate"]);
+                    wareHouseReceipt.WarehouseTotalBill = Convert.ToDecimal(dr["WarehouseTotalBill"]);
+                    res.Add(wareHouseReceipt);
+                }
+            }
+            return res;
+        }
+
+        public void AddWarehouseReceiptQuery(
+            string WarehouseReceiptID,
+            string StaffID,
+            DateTime ImportDate,
+            decimal WarehouseReceiptTotalBill)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string inportDate = ImportDate.ToString("yyyy-MM-dd HH:mm:ss");
+                string sql = "insert into WarehouseReceipt values ('" +
+                    WarehouseReceiptID +
+                    "', '" + StaffID +
+                    "', '" + inportDate +
+                    "', " + WarehouseReceiptTotalBill +
+                    ", " + 0 + ")";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateWarehouseReceiptQuery(string WarehouseReceiptID, string attribute, string value)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "";
+                if (attribute == "TotalBill")
+                {
+                    sql = "update WarehouseReceipt set" +
+                    " TotalBill = " + Convert.ToDecimal(value) +
+                    " where WarehouseReceiptID = '" + WarehouseReceiptID + "'";
+                }
+                else
+                {
+                    sql = "update WarehouseReceipt set" +
+                    " " + attribute + " = '" + Convert.ToDecimal(value) +
+                    "' where WarehouseReceiptID = '" + WarehouseReceiptID + "'";
+                }
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private string GetWarehouseReceiptDesc()
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "select top 1 WarehouseReceiptID from WarehouseReceipt order by WarehouseReceiptID desc";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                string res = "";
+                while (dr.Read())
+                {
+                    res = dr["WarehouseReceiptID"].ToString();
+                }
+                return res;
+            }
+        }
+
+        public string GetNewWarehouseReceiptID()
+        {
+            string res = GetWarehouseReceiptDesc();
+            if (res != null || !res.Equals(""))
+            {
+                int order = int.Parse(res.Substring(4)) + 1;
+                if (order < 10)
+                {
+                    res = "WHMP00000" + order.ToString();
+                }
+                else if (order < 100)
+                {
+                    res = "WHMP0000" + order.ToString();
+                }
+                else if (order < 1000)
+                {
+                    res = "WHMP000" + order.ToString();
+                }
+                else if (order < 10000)
+                {
+                    res = "WHMP00" + order.ToString();
+                }
+                else if (order < 100000)
+                {
+                    res = "WHMP0" + order.ToString();
+                }
+                else
+                {
+                    res = "WHMP" + order.ToString();
+                }
+                return res;
+            }
+            else
+            {
+                return "WHMP000001";
+            }
+        }
     }
 }

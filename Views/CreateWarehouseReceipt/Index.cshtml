@@ -1,0 +1,38 @@
+﻿@using Agent_WebForm_Prodject.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (Session["StaffID"] == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+
+    List<WareHouseReceipt> warehouseReceiptList = ViewBag.WarehouseReceiptList;
+}
+
+<div>
+    <div>
+        <a id="create-receipt-btn" href="@Url.Action("Create", "CreateWarehouseReceipt")">Create new warehouse receipt</a>
+    </div>
+    <hr />
+    <div>
+        <table class="table table-bordered">
+            <tr>
+                <th>WareHouseReceipt ID</th>
+                <th>Staff ID</th>
+                <th>Import Date</th>
+                <th>Total Bill</th>
+            </tr>
+            @foreach (WareHouseReceipt warehouseReceipt in warehouseReceiptList)
+            {
+                <tr>
+                    <td>@warehouseReceipt.WarehouseReceiptID</td>
+                    <td>@warehouseReceipt.StaffID</td>
+                    <td>@warehouseReceipt.ImportDate</td>
+                    <td>@warehouseReceipt.WarehouseTotalBill</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

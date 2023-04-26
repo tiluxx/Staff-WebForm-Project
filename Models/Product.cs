@@ -11,7 +11,9 @@ namespace Agent_WebForm_Prodject.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Configuration;
+    using System.Data.SqlClient;
+
     public partial class Product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -38,5 +40,90 @@ namespace Agent_WebForm_Prodject.Models
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WareHouseReceiptDetail> WareHouseReceiptDetails { get; set; }
+
+        public void AddProductQuery(string ProductID,
+            string ProductName,
+            string ProductSize,
+            string ProductUnitSize,
+            string ProductBrand,
+            string ProductOrigin,
+            int ProductQuantity,
+            decimal ProductPrice)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "insert into Product values ('" +
+                    ProductID +
+                    "', '" + ProductName +
+                    "', '" + ProductSize +
+                    "', '" + ProductUnitSize +
+                    "', '" + ProductBrand +
+                    "', '" + ProductOrigin +
+                    "', " + ProductQuantity +
+                    ", " + ProductPrice +
+                    ", " + 0 + ")";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private string GetProductDesc()
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "select top 1 ProductID from Product order by ProductID desc";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                string res = "";
+                while (dr.Read())
+                {
+                    res = dr["ProductID"].ToString();
+                }
+                return res;
+            }
+        }
+
+        public string GetNewProductID()
+        {
+            string res = GetProductDesc();
+            if (res != null || !res.Equals(""))
+            {
+                int order = int.Parse(res.Substring(4)) + 1;
+                if (order < 10)
+                {
+                    res = "MPVN00000" + order.ToString();
+                }
+                else if (order < 100)
+                {
+                    res = "MPVN0000" + order.ToString();
+                }
+                else if (order < 1000)
+                {
+                    res = "MPVN000" + order.ToString();
+                }
+                else if (order < 10000)
+                {
+                    res = "MPVN00" + order.ToString();
+                }
+                else if (order < 100000)
+                {
+                    res = "MPVN0" + order.ToString();
+                }
+                else
+                {
+                    res = "MPVN" + order.ToString();
+                }
+                return res;
+            }
+            else
+            {
+                return "MPVN000001";
+            }
+        }
+
+        public string ErrorMessage { get; set; }
     }
 }

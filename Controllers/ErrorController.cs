@@ -6,11 +6,18 @@ using System.Web.Mvc;
 
 namespace Agent_WebForm_Prodject.Controllers
 {
-    public class HomeController : Controller
+    public class ErrorController : Controller
     {
+        // GET: Error
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult NotFound()
+        {
+            Response.StatusCode = 404;
+            return View("NotFound");
         }
     }
 }

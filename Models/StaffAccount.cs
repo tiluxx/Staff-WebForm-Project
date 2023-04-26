@@ -11,7 +11,9 @@ namespace Agent_WebForm_Prodject.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Configuration;
+    using System.Data.SqlClient;
+
     public partial class StaffAccount
     {
         public string StaffACID { get; set; }
@@ -19,5 +21,24 @@ namespace Agent_WebForm_Prodject.Models
     
         public virtual C_User C_User { get; set; }
         public virtual UserAccount UserAccount { get; set; }
+
+        public string GetStaffID(string username)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "select StaffID from StaffAccount where StaffACID = '" + username + "' and StaffID = '" + username + "'";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                string res = "";
+                while (dr.Read())
+                {
+                    res = dr["StaffID"].ToString();
+                }
+                cmd.ExecuteNonQuery();
+                return res;
+            }
+        }
     }
 }

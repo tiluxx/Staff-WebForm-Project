@@ -28,7 +28,8 @@ namespace Agent_WebForm_Prodject.Controllers
                 }
                 else
                 {
-                    Session["StaffID"] = userAccountModel.UserName;
+                    StaffAccount staffAccount = new StaffAccount();
+                    Session["StaffID"] = staffAccount.GetStaffID(userAccountModel.UserName);
                     return RedirectToAction("Index", "Home");
                 }
             }
