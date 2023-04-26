@@ -11,7 +11,9 @@ namespace Agent_WebForm_Prodject.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Configuration;
+    using System.Data.SqlClient;
+
     public partial class Agent
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,9 +23,144 @@ namespace Agent_WebForm_Prodject.Models
         }
     
         public string AgentID { get; set; }
-    
+        public string AgentName { get; set; }
+        public string AgentEmail { get; set; }
+        public string AgentPhoneNum { get; set; }
+        public string AgentAdress { get; set; }
+        public Nullable<bool> AgentDeleted { get; set; }
+
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<C_Order> C_Order { get; set; }
         public virtual C_User C_User { get; set; }
+
+
+        public List<Agent> SelectAgentQuery()
+        {
+            List<Agent> res = new List<Agent>();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("select * from Agent", conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    Agent agent = new Agent();
+                    agent.AgentID = dr["AgentID"].ToString();
+                    agent.AgentName = dr["AgentName"].ToString();
+                    res.Add(agent);
+                }
+            }
+            return res;
+        }
+
+        public void AddAgentQuery(
+            string AgentID,
+            string AgentName)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "insert into Agent values ('" +
+                    AgentID +
+                    "', '" + AgentName +
+                    ", " + 0 + ")";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateAgentQuery(string AgentID, string AgentName)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "";
+                if (AgentName == "AgentName")
+                {
+                    sql = "update Agent set" +
+                    " AgentName = " + AgentName +
+                    " where AgentID = '" + AgentID + "'";
+                }
+                else
+                {
+                    sql = "update WarehouseReceipt set" +
+                    " " + AgentName + " = '" + AgentName +
+                    "' where WarehouseReceiptID = '" + AgentID + "'";
+                }
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteAgentQuery(string AgentID, string AgentName = "")
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "delete from Agent where AgentID = '"
+                    + AgentID +
+                    "' and AgentName = '" + AgentName + "'";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private string GetAgentDesc()
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "select top 1 AgentID from Agent order by AgentID desc";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                string res = "";
+                while (dr.Read())
+                {
+                    res = dr["AgentID"].ToString();
+                }
+                return res;
+            }
+        }
+
+        public string GetAgenttID()
+        {
+            string res = GetAgentDesc();
+            if (res != null || !res.Equals(""))
+            {
+                int order = int.Parse(res.Substring(2)) + 1;
+                if (order < 10)
+                {
+                    res = "AG00000" + order.ToString();
+                }
+                else if (order < 100)
+                {
+                    res = "AG0000" + order.ToString();
+                }
+                else if (order < 1000)
+                {
+                    res = "AG000" + order.ToString();
+                }
+                else if (order < 10000)
+                {
+                    res = "AG00" + order.ToString();
+                }
+                else if (order < 100000)
+                {
+                    res = "AG0" + order.ToString();
+                }
+                else
+                {
+                    res = "AG" + order.ToString();
+                }
+                return res;
+            }
+            else
+            {
+                return "AG000001";
+            }
+        }
     }
 }

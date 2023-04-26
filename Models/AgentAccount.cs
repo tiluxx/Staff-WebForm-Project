@@ -11,13 +11,55 @@ namespace Agent_WebForm_Prodject.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Configuration;
+    using System.Data.SqlClient;
+
     public partial class AgentAccount
     {
         public string AgentACID { get; set; }
         public string AgentID { get; set; }
-    
+
         public virtual C_User C_User { get; set; }
         public virtual UserAccount UserAccount { get; set; }
+
+
+        public void AddAgentAcQuery(
+                string AgentACID,
+                string AgentID)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "insert into Agent values ('" +
+                    AgentID +
+                    "', '" + AgentACID +
+                    ", " + 0 + ")";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateAgentQuery(string AgentACID, string AgentID)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "";
+                if (AgentACID == "AgentAcID")
+                {
+                    sql = "update Agent set" +
+                    " AgentID = " + AgentID +
+                    " where AgentAcID = '" + AgentACID + "'";
+                }
+                else
+                {
+                    sql = "update AgentAc set" +
+                    " " + AgentID + " = '" + AgentID +
+                    "' where AgentAcID = '" + AgentACID + "'";
+                }
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

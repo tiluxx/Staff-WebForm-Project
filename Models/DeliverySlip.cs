@@ -11,7 +11,9 @@ namespace Agent_WebForm_Prodject.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Configuration;
+    using System.Data.SqlClient;
+
     public partial class DeliverySlip
     {
         public string SlipID { get; set; }
@@ -21,5 +23,71 @@ namespace Agent_WebForm_Prodject.Models
         public Nullable<bool> SlipDeleted { get; set; }
     
         public virtual C_Order C_Order { get; set; }
+
+
+        public List<DeliverySlip> SelectDeliverySlipQuery()
+        {
+            List<DeliverySlip> res = new List<DeliverySlip>();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("select * from DeliverySlip", conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    DeliverySlip deliverySlip = new DeliverySlip();
+                    deliverySlip.SlipID = dr["SlipID"].ToString();
+                    deliverySlip.OrderID = dr["OrderID"].ToString();
+                    deliverySlip.DeliveryDate = Convert.ToDateTime(dr["DeliveryDate"]);
+                    deliverySlip.TotalBill = Convert.ToDecimal(dr["TotalBill"]);
+                    res.Add(deliverySlip);
+                }
+            }
+            return res;
+        }
+
+        public void AddDeliverySlipQuery(
+            string SlipID,
+            string OrderID,
+            DateTime DeliveryDate,
+            decimal TotalBill)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string inportDate = DeliveryDate.ToString("yyyy-MM-dd HH:mm:ss");
+                string sql = "insert into DeliverySlip values ('" +
+                    SlipID +
+                    "', '" + OrderID +
+                    "', '" + inportDate +
+                    "', " + TotalBill +
+                    ", " + 0 + ")";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void UpdateDeliverySlipQuery(string SlipID, string attribute, string value)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "";
+                if (attribute == "TotalBill")
+                {
+                    sql = "update DeliverySlip set" +
+                    " TotalBill = " + Convert.ToDecimal(value) +
+                    " where SlipID = '" + SlipID + "'";
+                }
+                else
+                {
+                    sql = "update DeliverySlip set" +
+                    " " + attribute + " = '" + Convert.ToDecimal(value) +
+                    "' where SlipID = '" + SlipID + "'";
+                }
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }
