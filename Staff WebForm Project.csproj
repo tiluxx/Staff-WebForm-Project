@@ -143,6 +143,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ViewReportController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -280,6 +281,8 @@
     <Content Include="Views\CreateAgentAccount\Create.cshtml" />
     <Content Include="Views\CreateAgentAccount\Result.cshtml" />
     <Content Include="Views\CreateAgentAccount\ViewAgentAccount.cshtml" />
+    <Content Include="Views\ViewReport\Index.cshtml" />
+    <Content Include="Views\ViewReport\Result.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

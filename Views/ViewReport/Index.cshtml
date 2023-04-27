@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<string> monthNames = ViewBag.Data;
+}
+
+<div>
+    <div class="text-center">
+        <span class="text-info">Choose a report type to view</span>
+    </div>
+    <hr />
+    <div>
+        @using (Html.BeginForm("ReportViewResult", "ViewReport", FormMethod.Post))
+        {
+            <form>
+                <div class="form-group">
+                    <div class="editor-field" style="display: flex; margin-bottom: 8px">
+                        <input id="incomingStockReport" name="ReportType" type="radio" value="IncomingStock" required="required" />
+                        <label for="incomingStockReport" style="margin-bottom: 0; padding-left: 10px">Incoming Stock Report</label>
+                    </div>
+                    <div class="editor-field" style="display: flex; margin-bottom: 8px">
+                        <input id="outgoingStockReport" name="ReportType" type="radio" value="OutgoingStock" required="required" />
+                        <label for="outgoingStockReport" style="margin-bottom: 0; padding-left: 10px">Outgoing Stock Report</label>
+                    </div>
+                    <div class="editor-field" style="display: flex; margin-bottom: 8px">
+                        <input id="bestSellingReport" name="ReportType" type="radio" value="BestSellingReport" required="required" />
+                        <label for="bestSellingReport" style="margin-bottom: 0; padding-left: 10px">Best-selling Report</label>
+                    </div>
+                    <div class="editor-field" style="display: flex; margin-bottom: 8px">
+                        <input id="revenueByMonthReport" name="ReportType" type="radio" value="RevenueByMonthReport" required="required" />
+                        <label for="revenueByMonthReport" style="margin-bottom: 0; padding-left: 10px">Revenue by Month Report</label>
+                    </div>
+                    <div class="editor-field" style="display: flex; margin-bottom: 8px">
+                        <input id="revenueMonthlyReport" name="ReportType" type="radio" value="RevenueMonthlyReport" required="required" />
+                        <label for="revenueMonthlyReport" style="margin-bottom: 0; padding-left: 10px">Revenue Monthly Report</label>
+                    </div>
+                </div>
+                <div class="editor-field">
+                    <select id="month" name="Month" required="required">
+                        @{
+                            if (monthNames != null)
+                            {
+                                foreach (string item in monthNames)
+                                {
+                                    <option value="@item">@item</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">View Report</button>
+            </form>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        const revenueMonthlyReportRadio = document.getElementById("revenueMonthlyReport");
+        const monthSelection = document.getElementById("month");
+        if (revenueMonthlyReportRadio.checked) {
+            monthSelection.classList.add("disabled");
+        } else {
+            monthSelection.classList.remove("disabled");
+        }
+    </script>
+}

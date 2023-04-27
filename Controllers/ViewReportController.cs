@@ -4,87 +4,99 @@ using Syncfusion.Pdf.Graphics;
 using Syncfusion.Pdf.Grid;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Agent_WebForm_Prodject.Controllers
 {
-    public class CreateWarehouseReceiptController : Controller
+    public class ViewReportController : Controller
     {
-        // GET: CreateWarehouseReceipt
+        // GET: ViewReport
         public ActionResult Index()
         {
-            WareHouseReceipt wareHouseReceipt = new WareHouseReceipt();
-            List<WareHouseReceipt> res = wareHouseReceipt.SelectWarehouseReceiptQuery();
-            ViewBag.WarehouseReceiptList = res;
+            List<string> monthNames = new List<string>();
+            DateTimeFormatInfo dateTimeFormat = new DateTimeFormatInfo();
+            for (int i = 1; i <= 12; i++)
+            {
+                monthNames.Add(dateTimeFormat.GetMonthName(i));
+            }
+            ViewBag.Data = monthNames;
             return View();
         }
 
-        // GET: CreateWarehouseReceipt/Create
-        public ActionResult Create()
+        private int GetActualMonthNumber(string monthName)
         {
-            List<string> countryList = new List<string>();
-            CultureInfo[] getCultureInfo = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
-            foreach (CultureInfo getCulture in getCultureInfo)
+            switch (monthName)
             {
-                RegionInfo getRegionInfo = new RegionInfo(getCulture.LCID);
-                if (!countryList.Contains(getRegionInfo.EnglishName))
-                {
-                    countryList.Add(getRegionInfo.EnglishName);
-                }
+                case "January":
+                    return 1;
+                case "February":
+                    return 2;
+                case "March":
+                    return 3;
+                case "April":
+                    return 4;
+                case "May":
+                    return 5;
+                case "June":
+                    return 6;
+                case "July":
+                    return 7;
+                case "August":
+                    return 8;
+                case "September":
+                    return 9;
+                case "October":
+                    return 10;
+                case "November ":
+                    return 11;
+                case "December":
+                    return 12;
+                default:
+                    return 12;
             }
-            countryList.Sort();
-
-            ViewBag.CountryList = countryList;
-            return View();
         }
 
         [HttpPost]
-        public ActionResult CreateWarehouseReceiptAsync()
+        public ActionResult ReportViewResult()
         {
+            string month = Request.Form["Month"];
+            int monthNum = GetActualMonthNumber(month);
+            string reportType = Request.Form["ReportType"];
+
             WareHouseReceipt wareHouseReceipt = new WareHouseReceipt();
-            string newWarehouseReceiptID = wareHouseReceipt.GetNewWarehouseReceiptID();
-            wareHouseReceipt.AddWarehouseReceiptQuery(newWarehouseReceiptID, Session["StaffID"].ToString(), DateTime.Now, 0);
-
-            decimal totalBill = 0;
-            // Get the acutal number of groups of product's information
-            int formCount = Request.Form.Count / 8;
-            for (int i = 0; i < formCount; i++)
+            DataTable res = new DataTable();
+            string title = "";
+            if (reportType.Equals("IncomingStock"))
             {
-                string productID = Request.Form["ProductID[" + i + "]"];
-                string productName = Request.Form["ProductName[" + i + "]"];
-                string productSize = Request.Form["ProductSize[" + i + "]"];
-                string productUnitSize = Request.Form["ProductUnitSize[" + i + "]"];
-                string productBrand = Request.Form["ProductBrand[" + i + "]"];
-                string productOrigin = Request.Form["ProductOrigin[" + i + "]"];
-                int productQuantity = Convert.ToInt32(Request.Form["ProductQuantity[" + i + "]"]);
-                decimal productPrice = Convert.ToDecimal(Request.Form["ProductPrice[" + i + "]"]);
-                totalBill += productPrice;
-
-                Product currNewProduct = new Product();
-                currNewProduct.AddProductQuery(productID, productName, productSize, productUnitSize, productBrand, productOrigin, productQuantity, productPrice);
-                WareHouseReceiptDetail currNewReceiptDetail = new WareHouseReceiptDetail();
-                currNewReceiptDetail.AddWarehouseReceiptDetailQuery(newWarehouseReceiptID, productID, productQuantity);
+                res = wareHouseReceipt.GetImportProductByMonth(monthNum);
+                title = "INCOMING STOCK";
             }
-            wareHouseReceipt.UpdateWarehouseReceiptQuery(newWarehouseReceiptID, "WarehouseTotalBill", totalBill.ToString());
+            else if (reportType.Equals("OutgoingStock"))
+            {
+                res = wareHouseReceipt.GetExportProductByMonth(monthNum);
+                title = "OUTGOING STOCK";
+            }
+            else if (reportType.Equals("BestSellingReport"))
+            {
+                res = wareHouseReceipt.GetBestSellingProduct(monthNum);
+                title = "BEST-SELLING";
+            }
+            else if (reportType.Equals("RevenueByMonthReport"))
+            {
+                res = wareHouseReceipt.GetRevenueByMonth(monthNum);
+                title = "REVENUE IN " + month.ToUpper();
+            }
+            else if (reportType.Equals("RevenueMonthlyReport"))
+            {
+                wareHouseReceipt.GetRevenueMonthly();
+                title = "REVENUE MONTHLY";
+            }
 
-            ViewBag.Message = "Create warehouse receipt successfully";
-            return View("Result");
-        }
-
-        public ActionResult PrintWarehouseReceipt(
-            string warehouseReceiptID,
-            string staffId,
-            DateTime importDate,
-            decimal warehouseTotalBill)
-        {
             // Generate PDF file
             using (PdfDocument document = new PdfDocument())
             {
@@ -103,14 +115,14 @@ namespace Agent_WebForm_Prodject.Controllers
                 // Creates a font for adding the heading in the page
                 PdfFont subHeadingFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 14);
                 //Creates a text element to add the invoice number
-                PdfTextElement element = new PdfTextElement("WAREHOUSE RECEIPT " + warehouseReceiptID, subHeadingFont)
+                PdfTextElement element = new PdfTextElement(title + " REPORT", subHeadingFont)
                 {
                     Brush = PdfBrushes.White
                 };
 
                 // Draws the heading on the page
                 PdfLayoutResult result = element.Draw(page, new PointF(10, bounds.Top + 8));
-                string currentDate = "Import Date: " + importDate.ToString("yyyy-MM-dd HH:mm:ss");
+                string currentDate = "Date Created: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
                 // Measures the width of the text to place it in the correct location
                 SizeF textSize = subHeadingFont.MeasureString(currentDate);
@@ -119,31 +131,21 @@ namespace Agent_WebForm_Prodject.Controllers
                 graphics.DrawString(currentDate, subHeadingFont, element.Brush, textPosition);
                 PdfFont timesRoman = new PdfStandardFont(PdfFontFamily.Helvetica, 10f);
                 // Creates text elements to add the address and draw it to the page.
-                element = new PdfTextElement("Staff ID: " + staffId, timesRoman)
+                element = new PdfTextElement("Staff ID: " + Session["StaffID"], timesRoman)
                 {
                     Brush = new PdfSolidBrush(new PdfColor(126, 155, 203))
                 };
                 result = element.Draw(page, new PointF(10, result.Bounds.Bottom + 25));
-                element = new PdfTextElement("Total Bill: " + warehouseTotalBill, timesRoman)
-                {
-                    Brush = new PdfSolidBrush(new PdfColor(126, 155, 203))
-                };
-                result = element.Draw(page, new PointF(10, result.Bounds.Bottom + 25));
-
                 PdfPen linePen = new PdfPen(new PdfColor(126, 151, 173), 0.70f);
                 PointF startPoint = new PointF(0, result.Bounds.Bottom + 3);
                 PointF endPoint = new PointF(graphics.ClientSize.Width, result.Bounds.Bottom + 3);
                 // Draws a line at the bottom of the address
                 graphics.DrawLine(linePen, startPoint, endPoint);
 
-                // Creates the datasource for the table
-                WareHouseReceiptDetail wareHouseReceiptDetail = new WareHouseReceiptDetail();
-                DataTable productDetails = wareHouseReceiptDetail.GetWarehoueReceiptProductDetail(warehouseReceiptID);
-
                 // Creates a PDF grid
                 PdfGrid grid = new PdfGrid
                 {
-                    DataSource = productDetails
+                    DataSource = res
                 };
                 // Creates the grid cell styles
                 PdfGridCellStyle cellStyle = new PdfGridCellStyle();
@@ -178,11 +180,11 @@ namespace Agent_WebForm_Prodject.Controllers
                 // Draws the grid to the PDF page.
                 PdfGridLayoutResult gridResult = grid.Draw(page, new RectangleF(new PointF(0, result.Bounds.Bottom + 40), new SizeF(graphics.ClientSize.Width, graphics.ClientSize.Height - 100)), layoutFormat);
 
-                document.Save("Warehouse Receipt_" + warehouseReceiptID + ".pdf", HttpContext.ApplicationInstance.Response, HttpReadType.Save);
+                document.Save(title + " REPORT.pdf", HttpContext.ApplicationInstance.Response, HttpReadType.Save);
                 document.Close(true);
             }
 
-            ViewBag.Message = "Print warehouse receipt " + warehouseReceiptID + " successfully";
+            ViewBag.Message = "Print " + title + " REPORT successfully";
             return View("Result");
         }
 

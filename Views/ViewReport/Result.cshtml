@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Result";
+    ViewBag.Title = "ReportViewResult";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     string message = ViewBag.Message;
@@ -10,6 +10,6 @@
     <h2 class="text-center">Result</h2>
     <div class="alert alert-success text-center">@message</div>
     <div style="margin-top: 10px; margin-bottom: 10px" class="text-center">
-        <a id="create-receipt-btn" class="btn btn-primary text-center" href="@Url.Action("Index", "CreateWarehouseReceipt")">Go back</a>
+        <a id="create-receipt-btn" class="btn btn-primary text-center" href="@Url.Action("Index", "ViewReport")">Go back</a>
     </div>
 </div>
