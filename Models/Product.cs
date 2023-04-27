@@ -89,7 +89,7 @@ namespace Agent_WebForm_Prodject.Models
         public string GetNewProductID()
         {
             string res = GetProductDesc();
-            if (res != null || !res.Equals(""))
+            if (res != null && !res.Equals(""))
             {
                 int order = int.Parse(res.Substring(4)) + 1;
                 if (order < 10)

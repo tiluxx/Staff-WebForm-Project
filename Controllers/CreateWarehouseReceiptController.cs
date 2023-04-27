@@ -49,8 +49,10 @@ namespace Agent_WebForm_Prodject.Controllers
             string newWarehouseReceiptID = wareHouseReceipt.GetNewWarehouseReceiptID();
             wareHouseReceipt.AddWarehouseReceiptQuery(newWarehouseReceiptID, Session["StaffID"].ToString(), DateTime.Now, 0);
 
-            Decimal totalBill = 0;
-            for (int i = 0; i <= Request.Form.Count; i++)
+            decimal totalBill = 0;
+            // Get the acutal number of groups of product's information
+            int formCount = Request.Form.Count / 8;
+            for (int i = 0; i < formCount; i++)
             {
                 string productID = Request.Form["ProductID[" + i + "]"];
                 string productName = Request.Form["ProductName[" + i + "]"];
@@ -67,9 +69,9 @@ namespace Agent_WebForm_Prodject.Controllers
                 WareHouseReceiptDetail currNewReceiptDetail = new WareHouseReceiptDetail();
                 currNewReceiptDetail.AddWarehouseReceiptDetailQuery(newWarehouseReceiptID, productID, productQuantity);
             }
-            wareHouseReceipt.UpdateWarehouseReceiptQuery(newWarehouseReceiptID, "TotalBill", totalBill.ToString());
+            wareHouseReceipt.UpdateWarehouseReceiptQuery(newWarehouseReceiptID, "WarehouseTotalBill", totalBill.ToString());
 
-            return View("Index");
+            return View("Result");
         }
     }
 }

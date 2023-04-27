@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "UpdateOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string orderId = ViewBag.Data;
+}
+
+<div>
+    <span style="margin-top: 10px; margin-bottom: 10px;">Update Order @orderId</span>
+    <hr />
+    <div>
+        @using (Html.BeginForm("UpdateOrderById", "CreateDeliverySlip", FormMethod.Post))
+        {
+            <input class="text-box single-line" name="OrderId" type="hidden" value="@orderId" required="required" />
+            <table class="table table-bordered">
+                <tr>
+                    <td>Order Status</td>
+                    <td>
+                        <div class="editor-field">
+                            <select id="OrderStatus" name="OrderStatus" required="required">
+                                <option value="Processing Stock">Processing Stock</option>
+                                <option value="Ready for Packing">Ready for Packing</option>
+                                <option value="Ready to Deliver">Ready to Deliver</option>
+                                <option value="Delivery In Progress">Delivery In Progress</option>
+                                <option value="Delivered">Delivered</option>
+                                <option value="Received">Received</option>
+                                <option value="Not Delivered">Not Delivered</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Payment Status</td>
+                    <td>
+                        <div class="editor-field">
+                            <select id="PaymentStatus" name="PaymentStatus" required="required">
+                                <option value="Awaiting Payment">Awaiting Payment</option>
+                                <option value="Payment Received">Payment Received</option>
+                                <option value="Payment Updated">Payment Updated</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                                <option value="Failed">Failed</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-primary">Update</button>
+         }
+    </div>
+</div>
+

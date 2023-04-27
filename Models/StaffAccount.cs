@@ -27,7 +27,7 @@ namespace Agent_WebForm_Prodject.Models
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
                 conn.Open();
-                string sql = "select StaffID from StaffAccount where StaffACID = '" + username + "' and StaffID = '" + username + "'";
+                string sql = "select StaffID from StaffAccount where StaffACID = '" + username + "' or StaffID = '" + username + "'";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 SqlDataReader dr = cmd.ExecuteReader();
@@ -36,7 +36,7 @@ namespace Agent_WebForm_Prodject.Models
                 {
                     res = dr["StaffID"].ToString();
                 }
-                cmd.ExecuteNonQuery();
+                conn.Close();
                 return res;
             }
         }

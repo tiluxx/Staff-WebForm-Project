@@ -1,5 +1,6 @@
 ﻿@using Agent_WebForm_Prodject.Models
-@model Product
+@model Product  
+
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,7 +12,7 @@
 
     var countryList = (List<string>)@ViewBag.CountryList;
 }
-<h1>@ViewBag.Message</h1>
+
 <h3><b>Create Warehouse Receipt</b></h3>
 <div>
     <h5>Enter incoming products</h5>
@@ -111,7 +112,6 @@
     <script type="text/javascript">
         let counter = 1;
         $(function () {
-
             $('#addProductBtn').click(function () {
                 @{
                     var optionTag = "";
@@ -143,7 +143,7 @@
                 tableRow += '</select ></div></td> ' +
                 '<td><div class="editor-field"><input class="text-box single-line" name="ProductQuantity[' + counter + ']" type="number" value="" required="required" /></div></td>' +
                 '<td><div class="editor-field"><input class="text-box single-line" name="ProductPrice[' + counter + ']" type="number" value="" required="required" /></div</td>' +
-                '<td><button type="button" class="btn btn-primary" onclick="removeTr(' + counter + ');">Delete</button></td>' +
+                '<td><button type="button" class="btn btn-default" onclick="removeTr(' + counter + ');">Delete</button></td>' +
                 '</tr>'
                 $(tableRow).appendTo('#incomingProductsForm');
                 counter++;

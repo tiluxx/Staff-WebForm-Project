@@ -81,16 +81,16 @@ namespace Agent_WebForm_Prodject.Models
             {
                 conn.Open();
                 string sql = "";
-                if (attribute == "TotalBill")
+                if (attribute == "WarehouseTotalBill")
                 {
                     sql = "update WarehouseReceipt set" +
-                    " TotalBill = " + Convert.ToDecimal(value) +
+                    " WarehouseTotalBill = " + Convert.ToDecimal(value) +
                     " where WarehouseReceiptID = '" + WarehouseReceiptID + "'";
                 }
                 else
                 {
                     sql = "update WarehouseReceipt set" +
-                    " " + attribute + " = '" + Convert.ToDecimal(value) +
+                    " " + attribute + " = '" + value +
                     "' where WarehouseReceiptID = '" + WarehouseReceiptID + "'";
                 }
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -119,7 +119,7 @@ namespace Agent_WebForm_Prodject.Models
         public string GetNewWarehouseReceiptID()
         {
             string res = GetWarehouseReceiptDesc();
-            if (res != null || !res.Equals(""))
+            if (res != null && !res.Equals(""))
             {
                 int order = int.Parse(res.Substring(4)) + 1;
                 if (order < 10)

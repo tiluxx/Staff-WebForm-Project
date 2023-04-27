@@ -24,7 +24,6 @@ namespace Agent_WebForm_Prodject.Models
     
         public virtual C_Order C_Order { get; set; }
 
-
         public List<DeliverySlip> SelectDeliverySlipQuery()
         {
             List<DeliverySlip> res = new List<DeliverySlip>();
@@ -56,17 +55,18 @@ namespace Agent_WebForm_Prodject.Models
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
                 conn.Open();
-                string inportDate = DeliveryDate.ToString("yyyy-MM-dd HH:mm:ss");
+                string importDate = DeliveryDate.ToString("yyyy-MM-dd HH:mm:ss");
                 string sql = "insert into DeliverySlip values ('" +
                     SlipID +
                     "', '" + OrderID +
-                    "', '" + inportDate +
+                    "', '" + importDate +
                     "', " + TotalBill +
                     ", " + 0 + ")";
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
             }
         }
+
         public void UpdateDeliverySlipQuery(string SlipID, string attribute, string value)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
@@ -87,6 +87,62 @@ namespace Agent_WebForm_Prodject.Models
                 }
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
+            }
+        }
+
+        private string GetDeliverySlipDesc()
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "select top 1 SlipID from DeliverySlip order by SlipID desc";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                string res = "";
+                while (dr.Read())
+                {
+                    res = dr["SlipID"].ToString();
+                }
+                return res;
+            }
+        }
+
+        public string GetNewDeliverySlipID()
+        {
+            string res = GetDeliverySlipDesc();
+            if (res != null && !res.Equals(""))
+            {
+                int order = int.Parse(res.Substring(4)) + 1;
+                if (order < 10)
+                {
+                    res = "DSMP00000" + order.ToString();
+                }
+                else if (order < 100)
+                {
+                    res = "DSMP0000" + order.ToString();
+                }
+                else if (order < 1000)
+                {
+                    res = "DSMP000" + order.ToString();
+                }
+                else if (order < 10000)
+                {
+                    res = "DSMP00" + order.ToString();
+                }
+                else if (order < 100000)
+                {
+                    res = "DSMP0" + order.ToString();
+                }
+                else
+                {
+                    res = "DSMP" + order.ToString();
+                }
+                return res;
+            }
+            else
+            {
+                return "DSMP000001";
             }
         }
     }

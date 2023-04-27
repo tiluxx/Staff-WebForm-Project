@@ -12,14 +12,16 @@
 }
 
 <div>
-    <div>
-        <a id="create-receipt-btn" href="@Url.Action("Create", "CreateWarehouseReceipt")">Create new warehouse receipt</a>
+    <div style="margin-top: 10px; margin-bottom: 10px">
+        <a id="create-receipt-btn" class="btn btn-primary" href="@Url.Action("Create", "CreateWarehouseReceipt")">Create new warehouse receipt</a>
     </div>
+    <hr />
+    <span class="text-info">Warehouse receipt history</span>
     <hr />
     <div>
         <table class="table table-bordered">
             <tr>
-                <th>WareHouseReceipt ID</th>
+                <th>WareHouse Receipt ID</th>
                 <th>Staff ID</th>
                 <th>Import Date</th>
                 <th>Total Bill</th>

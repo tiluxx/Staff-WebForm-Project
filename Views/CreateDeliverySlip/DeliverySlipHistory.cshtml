@@ -1,0 +1,40 @@
+﻿@using Agent_WebForm_Prodject.Models
+@{
+    ViewBag.Title = "DeliverySlipHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (Session["StaffID"] == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+
+    List<DeliverySlip> deliverySlipList = ViewBag.DeliverySlipList;
+}
+
+<div>
+    <div style="margin-top: 10px; margin-bottom: 10px">
+        <a id="create-receipt-btn" class="btn btn-primary" href="@Url.Action("Index", "CreateDeliverySlip")">Go back</a>
+    </div>
+    <hr />
+    <span class="text-info">Delivery slip history</span>
+    <hr />
+    <div>
+        <table class="table table-bordered">
+            <tr>
+                <th>Delivery Slip ID</th>
+                <th>Order ID</th>
+                <th>Delivery Date</th>
+                <th>Total Bill</th>
+            </tr>
+            @foreach (DeliverySlip deliverySlip in deliverySlipList)
+            {
+                <tr>
+                    <td>@deliverySlip.SlipID</td>
+                    <td>@deliverySlip.OrderID</td>
+                    <td>@deliverySlip.DeliveryDate</td>
+                    <td>@deliverySlip.TotalBill</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

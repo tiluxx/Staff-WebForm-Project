@@ -11,7 +11,10 @@ namespace Agent_WebForm_Prodject.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Configuration;
+    using System.Data;
+    using System.Data.SqlClient;
+
     public partial class OrderDetail
     {
         public string OrderID { get; set; }
@@ -20,5 +23,18 @@ namespace Agent_WebForm_Prodject.Models
     
         public virtual C_Order C_Order { get; set; }
         public virtual Product Product { get; set; }
+
+        public DataTable GetOrderProductByOrderID(string orderId)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                string sql = "select P.*, O.Quantity from OrderDetail O, Product P where O.OrderID = '" + orderId + "' and O.ProductID = P.ProductID";
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(sql, conn);
+                DataTable res = new DataTable();
+                dataAdapter.Fill(res);
+                return res;
+
+            }
+        }
     }
 }

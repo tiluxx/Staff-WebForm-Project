@@ -11,7 +11,9 @@ namespace Agent_WebForm_Prodject.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Configuration;
+    using System.Data.SqlClient;
+
     public partial class C_Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -36,5 +38,81 @@ namespace Agent_WebForm_Prodject.Models
         public virtual ICollection<DeliverySlip> DeliverySlips { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+
+        public string GetPaymentDate
+        {
+            get
+            {
+                return PaymentDate.HasValue ? PaymentDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : "Not Paid";
+            }
+        }
+
+        public List<C_Order> SelectOrderQuery()
+        {
+            
+            List<C_Order> res = new List<C_Order>();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("select * from _Order", conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    C_Order order = new C_Order();
+                    order.OrderID = dr["OrderID"].ToString();
+                    order.OrderDate = Convert.ToDateTime(dr["OrderDate"]);
+                    order.AgentID = dr["AgentID"].ToString();
+                    order.OrderStatus = dr["OrderStatus"].ToString();
+                    order.PaymentStatus = dr["PaymentStatus"].ToString();
+                    if (!(dr["PaymentDate"] is DBNull))
+                    {
+                        order.PaymentDate = Convert.ToDateTime(dr["PaymentDate"]);
+                    }
+                    order.PaymentMethod = dr["PaymentMethod"].ToString();
+                    order.OrderProductTotalBill = Convert.ToDecimal(dr["OrderProductTotalBill"]);
+                    res.Add(order);
+                }
+                conn.Close();
+            }
+            return res;
+        }
+
+        public void UpdateOrderStatusQuery(string OrderId, string OrderStatus)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "update _Order set" +
+                    " OrderStatus = '" + OrderStatus +
+                    "' where OrderID  = '" + OrderId + "'";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateOrderPaymentStatusQuery(bool IsPaid, string OrderId, string PaymentStatus)
+        {
+            string sql = "";
+            if (IsPaid)
+            {
+                sql = "update _Order set" +
+                    " PaymentStatus = '" + PaymentStatus +
+                    "', PaymentDate = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "' where OrderID  = '" + OrderId + "'";
+            }
+            else
+            {
+                sql = "update _Order set" +
+                    " PaymentStatus = '" + PaymentStatus +
+                    "' where OrderID  = '" + OrderId + "'";
+            }
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

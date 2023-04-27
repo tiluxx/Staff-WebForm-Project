@@ -1,0 +1,53 @@
+﻿@using Agent_WebForm_Prodject.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (Session["StaffID"] == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+
+    List<C_Order> orderList = ViewBag.OrderList;
+}
+
+<div>
+    <div class="text-center" style="margin-top: 10px; margin-bottom: 10px">
+        <a id="create-receipt-btn" class="btn btn-default" href="@Url.Action("DeliverySlipHistory", "CreateDeliverySlip")">Delivery slip history</a>
+    </div>
+    <hr />
+    <span class="text-info text-center">Order list</span>
+    <hr />
+    <div>
+        <table class="table table-bordered">
+            <tr>
+                <th>Action</th>
+                <th>ORder ID</th>
+                <th>Order Date</th>
+                <th>Agent ID</th>
+                <th>Order Status</th>
+                <th>Payment Status</th>
+                <th>Payment Date</th>
+                <th>Payment Method</th>
+                <th>Total Bill</th>
+            </tr>
+            @foreach (C_Order order in orderList)
+             {
+                <tr>
+                    <td>
+                        <a style="margin-bottom: 8px" class="btn btn-primary" href="@Url.Action("UpdateOrder", "CreateDeliverySlip", new { orderId = order.OrderID })">Update order status</a>
+                        <a class="btn btn-primary" href="@Url.Action("CreateDeliverySlipByOrderId", "CreateDeliverySlip", new { orderId = order.OrderID, orderStatus = order.OrderStatus, agentId = order.AgentID })">Create delivery slip</a>
+                    </td>
+                    <td>@order.OrderID</td>
+                    <td>@order.OrderDate</td>
+                    <td>@order.AgentID</td>
+                    <td>@order.OrderStatus</td>
+                    <td>@order.PaymentStatus</td>
+                    <td>@order.GetPaymentDate</td>
+                    <td>@order.PaymentMethod</td>
+                    <td>@order.OrderProductTotalBill</td>
+                </tr>
+             }
+        </table>
+    </div>
+</div>
