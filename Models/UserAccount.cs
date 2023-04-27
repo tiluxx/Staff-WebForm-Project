@@ -13,6 +13,8 @@ namespace Agent_WebForm_Prodject.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Configuration;
+    using System.Data.SqlClient;
 
     public partial class UserAccount
     {
@@ -31,5 +33,29 @@ namespace Agent_WebForm_Prodject.Models
         public virtual AgentAccount AgentAccount { get; set; }
         public virtual CustomerAccount CustomerAccount { get; set; }
         public virtual StaffAccount StaffAccount { get; set; }
+
+        public List<UserAccount> SelectAgentAcByIDQuery(string agentID)
+        {
+            List<UserAccount> res = new List<UserAccount>();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "select U.UserName as 'AgentUsername', U.UserPassword as 'AgentPassword', U.Activated as 'Activation'" +
+                " from AgentAccount A, UserAccount U where A.AgentID = '" + agentID + "' and A.AgentACID = U.UserName";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    UserAccount agentAccount = new UserAccount();
+                    agentAccount.UserName = dr["AgentUsername"].ToString();
+                    agentAccount.UserPassword = dr["AgentPassword"].ToString();
+                    agentAccount.Activated = Convert.ToInt32(dr["Activation"]) == 0 ? false : true;
+                    res.Add(agentAccount);
+                }
+                conn.Close();
+            }
+            return res;
+        }
     }
 }

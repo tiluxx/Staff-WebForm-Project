@@ -38,14 +38,14 @@ namespace Agent_WebForm_Prodject.Controllers
             return View();
         }
 
-        // GET: CreateDeliverySlip/DeliverySlipHistory
+        // GET: CreateDeliverySlip/UpdateOrder
         public ActionResult UpdateOrder(string orderId)
         {
             ViewBag.Data = orderId;
             return View();
         }
 
-        public ActionResult CreateDeliverySlipByOrderId(string orderId, string orderStatus, string agentId)
+        public ActionResult PrintDeliverySlipByOrderId(string orderId, string orderStatus, string agentId)
         {
             DateTime currDateTime = DateTime.Now;
             // Update order status if needed
@@ -107,12 +107,12 @@ namespace Agent_WebForm_Prodject.Controllers
 
                 // Creates the datasource for the table
                 OrderDetail orderDetail = new OrderDetail();
-                DataTable invoiceDetails = orderDetail.GetOrderProductByOrderID(orderId);
+                DataTable productDetails = orderDetail.GetOrderProductByOrderID(orderId);
 
                 // Creates a PDF grid
                 PdfGrid grid = new PdfGrid
                 {
-                    DataSource = invoiceDetails
+                    DataSource = productDetails
                 };
                 // Creates the grid cell styles
                 PdfGridCellStyle cellStyle = new PdfGridCellStyle();
@@ -151,7 +151,7 @@ namespace Agent_WebForm_Prodject.Controllers
                 document.Close(true);
             }
 
-            ViewBag.Message = "Create delivery slip of order " + orderId + " successfully";
+            ViewBag.Message = "Print delivery slip of order " + orderId + " successfully";
             return View("Result");
         }
 

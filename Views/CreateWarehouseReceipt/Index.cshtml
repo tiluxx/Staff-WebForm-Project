@@ -21,6 +21,7 @@
     <div>
         <table class="table table-bordered">
             <tr>
+                <th>Action</th>
                 <th>WareHouse Receipt ID</th>
                 <th>Staff ID</th>
                 <th>Import Date</th>
@@ -29,6 +30,18 @@
             @foreach (WareHouseReceipt warehouseReceipt in warehouseReceiptList)
             {
                 <tr>
+                    <td>
+                        <a class="btn btn-primary"
+                           href="@Url.Action(
+                                "CreateDeliverySlipByOrderId", "CreateWarehouseReceipt",
+                                new { 
+                                    warehouseReceiptID = warehouseReceipt.WarehouseReceiptID,
+                                    staffId = warehouseReceipt.StaffID,
+                                    importDate = warehouseReceipt.ImportDate,
+                                    warehouseTotalBill = warehouseReceipt.WarehouseTotalBill})">
+                            Print
+                        </a>
+                    </td>
                     <td>@warehouseReceipt.WarehouseReceiptID</td>
                     <td>@warehouseReceipt.StaffID</td>
                     <td>@warehouseReceipt.ImportDate</td>

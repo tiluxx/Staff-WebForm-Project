@@ -41,7 +41,9 @@ namespace Agent_WebForm_Prodject.Models
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("select * from Agent", conn);
+                string sql = "select U.UserID as 'AgentID', U.UserName as 'AgentName', U.UserEmail as 'AgentEmail', U.UserPhone as 'AgentPhone', U.UserAddress as 'AgentAddress'" +
+                    " from Agent A, _User U where A.AgentID = U.UserID";
+                SqlCommand cmd = new SqlCommand(sql, conn);
 
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
@@ -49,6 +51,9 @@ namespace Agent_WebForm_Prodject.Models
                     Agent agent = new Agent();
                     agent.AgentID = dr["AgentID"].ToString();
                     agent.AgentName = dr["AgentName"].ToString();
+                    agent.AgentEmail = dr["AgentEmail"].ToString();
+                    agent.AgentPhoneNum = dr["AgentPhone"].ToString();
+                    agent.AgentAdress = dr["AgentAddress"].ToString();
                     res.Add(agent);
                 }
             }
@@ -57,17 +62,28 @@ namespace Agent_WebForm_Prodject.Models
 
         public void AddAgentQuery(
             string AgentID,
-            string AgentName)
+            string AgentName,
+            string AgentEmail,
+            string AgentPhoneNum,
+            string AgentAdress)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
                 conn.Open();
-                string sql = "insert into Agent values ('" +
+                string sql = "insert into _User values ('" +
                     AgentID +
                     "', '" + AgentName +
-                    ", " + 0 + ")";
+                    "', '" + AgentEmail +
+                    "', '" + AgentPhoneNum +
+                    "', '" + AgentAdress +
+                    "', " + 0 + ")";
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
+
+                sql = "insert into Agent values ('" + AgentID + "')";
+                cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
             }
         }
 
@@ -125,10 +141,10 @@ namespace Agent_WebForm_Prodject.Models
             }
         }
 
-        public string GetAgenttID()
+        public string GetNewAgenttID()
         {
             string res = GetAgentDesc();
-            if (res != null || !res.Equals(""))
+            if (res != null && !res.Equals(""))
             {
                 int order = int.Parse(res.Substring(2)) + 1;
                 if (order < 10)

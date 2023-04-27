@@ -28,12 +28,12 @@ namespace Agent_WebForm_Prodject.Models
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
-                string sql = "select P.*, O.Quantity from OrderDetail O, Product P where O.OrderID = '" + orderId + "' and O.ProductID = P.ProductID";
+                string sql = "select P.ProductID, P.ProductName, P.ProductSize, P.ProductUnitSize, P.ProductBrand, P.ProductOrigin, P.ProductPrice, O.Quantity as 'OrderQuantity'" +
+                    " from OrderDetail O, Product P where O.OrderID = '" + orderId + "' and O.ProductID = P.ProductID";
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(sql, conn);
                 DataTable res = new DataTable();
                 dataAdapter.Fill(res);
                 return res;
-
             }
         }
     }

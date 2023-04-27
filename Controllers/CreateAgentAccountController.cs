@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Agent_WebForm_Prodject.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +9,6 @@ namespace Agent_WebForm_Prodject.Controllers
 {
     public class CreateAgentAccountController : Controller
     {
-        // GET: CreateAgentAccount
-        public ActionResult Index()
-        {
-            return View();
-        }
+        
     }
 }

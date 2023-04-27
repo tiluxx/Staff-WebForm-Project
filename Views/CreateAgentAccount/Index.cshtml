@@ -1,8 +1,49 @@
-﻿
+﻿@using Agent_WebForm_Prodject.Models
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if(Session["StaffID"] == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+
+    List<Agent> agentList = ViewBag.AgentList;
 }
 
-<h2>Index</h2>
-
+<div>
+    <div style="margin-top: 10px; margin-bottom: 10px">
+        <a id="create-receipt-btn" class="btn btn-primary" href="@Url.Action("Create", "CreateAgentAccount")">Create new warehouse receipt</a>
+    </div>
+    <hr />
+    <span class="text-info">Warehouse receipt history</span>
+    <hr />
+    <div>
+        <table class="table table-bordered">
+            <tr>
+                <th>Action</th>
+                <th>Agent ID</th>
+                <th>Agent Name</th>
+                <th>Agent Email</th>
+                <th>Agent Phone</th>
+                <th>Agent Address</th>
+            </tr>
+            @foreach (Agent agent in agentList)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-primary"
+                           href="@Url.Action("ViewAgentAccount", "CreateAgentAccount", new { agentId = agent.AgentID })">
+                            View account
+                        </a>
+                    </td>
+                    <td>@agent.AgentID</td>
+                    <td>@agent.AgentName</td>
+                    <td>@agent.AgentEmail</td>
+                    <td>@agent.AgentPhoneNum</td>
+                    <td>@agent.AgentAdress</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

@@ -273,11 +273,13 @@
     <Content Include="Views\CreateWarehouseReceipt\Create.cshtml" />
     <Content Include="Views\CreateWarehouseReceipt\Result.cshtml" />
     <Content Include="Views\CreateDeliverySlip\Index.cshtml" />
-    <Content Include="Views\CreateDeliverySlip\Create.cshtml" />
     <Content Include="Views\CreateDeliverySlip\Result.cshtml" />
     <Content Include="Views\CreateDeliverySlip\DeliverySlipHistory.cshtml" />
     <Content Include="Views\CreateDeliverySlip\UpdateOrder.cshtml" />
     <Content Include="Views\CreateAgentAccount\Index.cshtml" />
+    <Content Include="Views\CreateAgentAccount\Create.cshtml" />
+    <Content Include="Views\CreateAgentAccount\Result.cshtml" />
+    <Content Include="Views\CreateAgentAccount\ViewAgentAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

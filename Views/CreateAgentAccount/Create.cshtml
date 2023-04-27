@@ -1,0 +1,61 @@
+﻿@using Agent_WebForm_Prodject.Models
+@model Agent
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Agent agent = new Agent();
+}
+
+<div>
+    <span style="margin-top: 10px; margin-bottom: 10px;">Add Agent information</span>
+    <hr />
+    <div>
+        @using (Html.BeginForm("CreateNewAgent", "CreateAgentAccount", FormMethod.Post))
+        {
+            <table class="table table-bordered">
+                <tr>
+                    <td>Agent ID</td>
+                    <td>
+                        <div class="editor-field">
+                            <input class="text-box single-line" name="AgentId" type="text" value="@agent.GetNewAgenttID()" required="required" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Agent Name</td>
+                    <td>
+                        <div class="editor-field">
+                            <input class="text-box single-line" name="AgentName" type="text" value="" required="required" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Agent Phone</td>
+                    <td>
+                        <div class="editor-field">
+                            <input class="text-box single-line" name="AgentPhone" type="text" value="" required="required" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Agent E-mail</td>
+                    <td>
+                        <div class="editor-field">
+                            <input class="text-box single-line" name="AgentEmail" type="text" value="" required="required" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Agent Address</td>
+                    <td>
+                        <div class="editor-field">
+                            <input class="text-box single-line" name="AgentAddress" type="text" value="" required="required" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-primary">Add</button>
+        }
+    </div>
+</div>

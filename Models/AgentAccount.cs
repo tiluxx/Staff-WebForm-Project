@@ -22,20 +22,29 @@ namespace Agent_WebForm_Prodject.Models
         public virtual C_User C_User { get; set; }
         public virtual UserAccount UserAccount { get; set; }
 
-
         public void AddAgentAcQuery(
-                string AgentACID,
-                string AgentID)
+            string AgentID,
+            string AgentAcName,
+            string AgentAcPass,
+            bool AgentAcActivated)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
                 conn.Open();
-                string sql = "insert into Agent values ('" +
-                    AgentID +
-                    "', '" + AgentACID +
+                string sql = "insert into UserAccount values ('" +
+                    AgentAcName +
+                    "', '" + AgentAcPass +
+                    "', " + 0 +
                     ", " + 0 + ")";
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
+
+                sql = "insert into AgentAccount values ('" +
+                    AgentAcName +
+                    "', '" + AgentID + "')";
+                cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
             }
         }
 

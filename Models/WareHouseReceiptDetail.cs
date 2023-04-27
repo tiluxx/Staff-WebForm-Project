@@ -12,6 +12,7 @@ namespace Agent_WebForm_Prodject.Models
     using System;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Data;
     using System.Data.SqlClient;
 
     public partial class WareHouseReceiptDetail
@@ -50,6 +51,19 @@ namespace Agent_WebForm_Prodject.Models
                     "' and ProductID = '" + ProductID + "'";
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
+            }
+        }
+
+        public DataTable GetWarehoueReceiptProductDetail(string wareHouseReceiptID)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                string sql = "select P.ProductID, P.ProductName, P.ProductSize, P.ProductUnitSize, P.ProductBrand, P.ProductOrigin, P.ProductPrice, W.Quantity as 'ImportQuantity'" +
+                    " from WareHouseReceiptDetail W, Product P where W.WareHouseReceiptID = '" + wareHouseReceiptID + "' and W.ProductID = P.ProductID";
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(sql, conn);
+                DataTable res = new DataTable();
+                dataAdapter.Fill(res);
+                return res;
             }
         }
     }

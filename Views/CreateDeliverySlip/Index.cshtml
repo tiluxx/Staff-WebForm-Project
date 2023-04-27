@@ -36,7 +36,7 @@
                 <tr>
                     <td>
                         <a style="margin-bottom: 8px" class="btn btn-primary" href="@Url.Action("UpdateOrder", "CreateDeliverySlip", new { orderId = order.OrderID })">Update order status</a>
-                        <a class="btn btn-primary" href="@Url.Action("CreateDeliverySlipByOrderId", "CreateDeliverySlip", new { orderId = order.OrderID, orderStatus = order.OrderStatus, agentId = order.AgentID })">Create delivery slip</a>
+                        <a class="btn btn-primary" href="@Url.Action("PrintDeliverySlipByOrderId", "CreateDeliverySlip", new { orderId = order.OrderID, orderStatus = order.OrderStatus, agentId = order.AgentID })">Print delivery slip</a>
                     </td>
                     <td>@order.OrderID</td>
                     <td>@order.OrderDate</td>
