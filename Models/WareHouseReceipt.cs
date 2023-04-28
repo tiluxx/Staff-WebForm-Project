@@ -155,17 +155,18 @@ namespace Agent_WebForm_Prodject.Models
             }
         }
 
-        public DataTable GetImportProductByMonth(int month)
+        public DataTable GetImportProductByMonth(int month, int year)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
                 string sql = "select P.ProductID, P.ProductName, P.ProductSize, P.ProductUnitSize, P.ProductBrand, P.ProductOrigin, P.ProductPrice, WD.Quantity" +
-                                    " from WareHouseReceiptDetail WD, Product P" +
-                                    " where WD.WareHouseReceiptID IN(" +
-                                        " select W.WarehouseReceiptID" +
-                                        " from WareHouseReceipt W" +
-                                        " where Month(W.ImportDate) = " + month +
-                                    " ) and WD.ProductID = P.ProductID";
+                            " from WareHouseReceiptDetail WD, Product P" +
+                            " where WD.WareHouseReceiptID IN(" +
+                                " select W.WarehouseReceiptID" +
+                                " from WareHouseReceipt W" +
+                                " where Month(W.ImportDate) = " + month +
+                                " and Month(W.ImportDate) = " + year +
+                            " ) and WD.ProductID = P.ProductID";
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(sql, conn);
                 DataTable res = new DataTable();
                 dataAdapter.Fill(res);
@@ -173,7 +174,7 @@ namespace Agent_WebForm_Prodject.Models
             }
         }
 
-        public DataTable GetExportProductByMonth(int month)
+        public DataTable GetExportProductByMonth(int month, int year)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
@@ -183,6 +184,7 @@ namespace Agent_WebForm_Prodject.Models
                             " select D.OrderID" +
                             " from DeliverySlip D" +
                             " where Month(D.DeliveryDate) = " + month +
+                            " and Month(D.DeliveryDate) = " + year +
                         " ) and O.ProductID = P.ProductID";
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(sql, conn);
                 DataTable res = new DataTable();
@@ -191,13 +193,13 @@ namespace Agent_WebForm_Prodject.Models
             }
         }
 
-        public DataTable GetBestSellingProduct(int month)
+        public DataTable GetBestSellingProduct(int month, int year)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
                 string sql = "select top(3) P.ProductID, P.ProductName, P.ProductSize, P.ProductUnitSize, P.ProductBrand, P.ProductOrigin, P.ProductPrice, SUM(O.Quantity) AS TotalQuantity" +
                         " from OrderDetail O, Product P" +
-                        " where O.OrderID IN ( select D.OrderID from DeliverySlip D where Month(D.DeliveryDate) = " + month + " ) and O.ProductID = P.ProductID" +
+                        " where O.OrderID IN ( select D.OrderID from DeliverySlip D where Month(D.DeliveryDate) = " + month + " and Year(D.DeliveryDate) = " + year + ") and O.ProductID = P.ProductID" +
                         " group by P.ProductID, P.ProductName, P.ProductSize, P.ProductUnitSize, P.ProductBrand, P.ProductOrigin, P.ProductPrice" +
                         " order by SUM(O.Quantity) DESC";
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(sql, conn);
@@ -207,14 +209,15 @@ namespace Agent_WebForm_Prodject.Models
             }
         }
 
-        public DataTable GetRevenueByMonth(int month)
+        public DataTable GetRevenueByMonth(int month, int year)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
-                string sql = "select M.MonthName AS 'Month', SUM(D.TotalBill) AS 'Revenue'" +
+                string sql = "select M.MonthName AS 'Month', Year(D.DeliveryDate) AS 'Year', SUM(D.TotalBill) AS 'Revenue'" +
                        " from DeliverySlip D, __Months M" +
                        " where Month(D.DeliveryDate) = " + month + " and Month(D.DeliveryDate) = M.MonthNumber" +
-                       " group by M.MonthName";
+                       " and Year(D.DeliveryDate) = " + year +
+                       " group by M.MonthName, Year(D.DeliveryDate)";
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(sql, conn);
                 DataTable res = new DataTable();
                 dataAdapter.Fill(res);

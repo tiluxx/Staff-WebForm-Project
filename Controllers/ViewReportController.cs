@@ -24,7 +24,15 @@ namespace Agent_WebForm_Prodject.Controllers
             {
                 monthNames.Add(dateTimeFormat.GetMonthName(i));
             }
-            ViewBag.Data = monthNames;
+
+            List<int> yearsNum = new List<int>();
+            int currYear = DateTime.Now.Year;
+            for (int i = currYear; i >= 1900; i--)
+            {
+                yearsNum.Add(i);
+            }
+            ViewBag.MonthList = monthNames;
+            ViewBag.YearList = yearsNum;
             return View();
         }
 
@@ -65,6 +73,7 @@ namespace Agent_WebForm_Prodject.Controllers
         public ActionResult ReportViewResult()
         {
             string month = Request.Form["Month"];
+            int yearNum = Convert.ToInt32(Request.Form["Year"]);
             int monthNum = GetActualMonthNumber(month);
             string reportType = Request.Form["ReportType"];
 
@@ -73,22 +82,22 @@ namespace Agent_WebForm_Prodject.Controllers
             string title = "";
             if (reportType.Equals("IncomingStock"))
             {
-                res = wareHouseReceipt.GetImportProductByMonth(monthNum);
+                res = wareHouseReceipt.GetImportProductByMonth(monthNum, yearNum);
                 title = "INCOMING STOCK";
             }
             else if (reportType.Equals("OutgoingStock"))
             {
-                res = wareHouseReceipt.GetExportProductByMonth(monthNum);
+                res = wareHouseReceipt.GetExportProductByMonth(monthNum, yearNum);
                 title = "OUTGOING STOCK";
             }
             else if (reportType.Equals("BestSellingReport"))
             {
-                res = wareHouseReceipt.GetBestSellingProduct(monthNum);
+                res = wareHouseReceipt.GetBestSellingProduct(monthNum, yearNum);
                 title = "BEST-SELLING";
             }
             else if (reportType.Equals("RevenueByMonthReport"))
             {
-                res = wareHouseReceipt.GetRevenueByMonth(monthNum);
+                res = wareHouseReceipt.GetRevenueByMonth(monthNum, yearNum);
                 title = "REVENUE IN " + month.ToUpper();
             }
             else if (reportType.Equals("RevenueMonthlyReport"))
