@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
@@ -80,7 +82,25 @@ namespace Agent_WebForm_Prodject.Controllers
             AgentAccount agentAccount = new AgentAccount();
             agentAccount.AddAgentAcQuery(agentId, username, password, false);
 
-            ViewBag.Message = "Create new agent and agent account successfully";
+            string distributorEmail = "lethanhtienhqv@gmail.com";
+
+            MailMessage createAccountMail = new MailMessage();
+            createAccountMail.To.Add(agentEmail);
+            createAccountMail.From = new MailAddress(distributorEmail);
+            createAccountMail.Subject = "Your Agent Account";
+            createAccountMail.Body = "Dear Customer,<br /><br />This is your agent account to access our distributor system: <br />Username: <strong>" + AccountUserNameTxt.Text + "</strong><br />Password: <strong>" + AccountPasswordTxt.Text + "</strong><br /><br />Sincerely,<br />Distributor";
+            createAccountMail.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(distributorEmail, "nhqpbctsxsoqfdxi"),
+                EnableSsl = true
+            };
+            smtp.Send(createAccountMail);
+
+            ViewBag.Message = "Create new agent and agent account successfully. A mail is sent to our new agent.";
             return View("Result");
         }
     }

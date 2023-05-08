@@ -165,7 +165,7 @@ namespace Agent_WebForm_Prodject.Models
                                 " select W.WarehouseReceiptID" +
                                 " from WareHouseReceipt W" +
                                 " where Month(W.ImportDate) = " + month +
-                                " and Month(W.ImportDate) = " + year +
+                                " and Year(W.ImportDate) = " + year +
                             " ) and WD.ProductID = P.ProductID";
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(sql, conn);
                 DataTable res = new DataTable();
@@ -184,7 +184,7 @@ namespace Agent_WebForm_Prodject.Models
                             " select D.OrderID" +
                             " from DeliverySlip D" +
                             " where Month(D.DeliveryDate) = " + month +
-                            " and Month(D.DeliveryDate) = " + year +
+                            " and Year(D.DeliveryDate) = " + year +
                         " ) and O.ProductID = P.ProductID";
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(sql, conn);
                 DataTable res = new DataTable();

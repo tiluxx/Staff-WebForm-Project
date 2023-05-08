@@ -30,6 +30,8 @@ namespace Agent_WebForm_Prodject.Models
         public string PaymentStatus { get; set; }
         public Nullable<System.DateTime> PaymentDate { get; set; }
         public string PaymentMethod { get; set; }
+        public Nullable<System.Int64> PaymentTransactionNo { get; set; }
+
         public Nullable<decimal> OrderProductTotalBill { get; set; }
         public Nullable<bool> OrderDeleted { get; set; }
     
@@ -44,6 +46,14 @@ namespace Agent_WebForm_Prodject.Models
             get
             {
                 return PaymentDate.HasValue ? PaymentDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : "Not Paid";
+            }
+        }
+
+        public string GetTransactionNo
+        {
+            get
+            {
+                return PaymentTransactionNo.HasValue ? PaymentTransactionNo.Value.ToString() : "Not Paid";
             }
         }
 
@@ -68,6 +78,10 @@ namespace Agent_WebForm_Prodject.Models
                     if (!(dr["PaymentDate"] is DBNull))
                     {
                         order.PaymentDate = Convert.ToDateTime(dr["PaymentDate"]);
+                    }
+                    if (!(dr["PaymentTransactionNo"] is DBNull))
+                    {
+                        order.PaymentTransactionNo = Convert.ToInt64(dr["PaymentTransactionNo"]);
                     }
                     order.PaymentMethod = dr["PaymentMethod"].ToString();
                     order.OrderProductTotalBill = Convert.ToDecimal(dr["OrderProductTotalBill"]);

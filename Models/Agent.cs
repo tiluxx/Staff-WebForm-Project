@@ -146,36 +146,36 @@ namespace Agent_WebForm_Prodject.Models
             string res = GetAgentDesc();
             if (res != null && !res.Equals(""))
             {
-                int order = int.Parse(res.Substring(2)) + 1;
+                int order = int.Parse(res.Substring(4)) + 1;
                 if (order < 10)
                 {
-                    res = "AG00000" + order.ToString();
+                    res = "AGMP00000" + order.ToString();
                 }
                 else if (order < 100)
                 {
-                    res = "AG0000" + order.ToString();
+                    res = "AGMP0000" + order.ToString();
                 }
                 else if (order < 1000)
                 {
-                    res = "AG000" + order.ToString();
+                    res = "AGMP000" + order.ToString();
                 }
                 else if (order < 10000)
                 {
-                    res = "AG00" + order.ToString();
+                    res = "AGMP00" + order.ToString();
                 }
                 else if (order < 100000)
                 {
-                    res = "AG0" + order.ToString();
+                    res = "AGMP0" + order.ToString();
                 }
                 else
                 {
-                    res = "AG" + order.ToString();
+                    res = "AGMP" + order.ToString();
                 }
                 return res;
             }
             else
             {
-                return "AG000001";
+                return "AGMP000001";
             }
         }
     }

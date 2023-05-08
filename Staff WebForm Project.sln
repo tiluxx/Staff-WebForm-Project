@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.33529.622
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Staff WebForm Project", "Staff WebForm Project.csproj", "{790DB8F6-A79A-416E-9EA7-5464E8215D16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Staff WebForm Project.Tests", "..\Agent WebForm Prodject.Tests\Staff WebForm Project.Tests.csproj", "{A8012CC9-9C97-46A0-9259-C2D799542C76}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Staff WebForm Project.Tests", "..\Staff WebForm Prodject.Tests\Staff WebForm Project.Tests.csproj", "{A8012CC9-9C97-46A0-9259-C2D799542C76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

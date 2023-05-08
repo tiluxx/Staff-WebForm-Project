@@ -11,6 +11,9 @@
     }
 
     var countryList = (List<string>)@ViewBag.CountryList;
+
+    Product product = new Product();
+    string newProductId = product.GetNewProductID();
 }
 
 <h3><b>Create Warehouse Receipt</b></h3>
@@ -37,7 +40,7 @@
                 <tr id="tablerow-1">
                     <td>
                         <div class="editor-field">
-                            <input class="text-box single-line" name="ProductID[0]" type="text" value="" required="required" />
+                            <input class="text-box single-line" name="ProductID[0]" type="text" value="@newProductId" required="required" />
                         </div>
                     </td>
                     <td>
@@ -124,7 +127,7 @@
                     }
                 }
                 let tableRow = "<tr id='tablerow-" + counter + "'>" +
-                    "<td><div class='editor-field'><input class='text-box single-line' name='ProductID[" + counter + "]' type='text' value='' required='required' /></div></td>" +
+                    "<td><div class='editor-field'><input class='text-box single-line' name='ProductID[" + counter + "]' type='text' value='@newProductId' required='required' /></div></td>" +
                 "<td><div class='editor-field'><input class='text-box single-line' name='ProductName[" + counter + "]' type='text' value='' required='required' /></div></td>" +
                 "<td><div class='editor-field'><input class='text-box single-line' name='ProductSize[" + counter + "]' type='text' value='' required='required' /></div></td>" +
                     "<td><div class='editor-field'>" +
