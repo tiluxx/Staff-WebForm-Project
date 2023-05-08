@@ -88,7 +88,7 @@ namespace Agent_WebForm_Prodject.Controllers
             createAccountMail.To.Add(agentEmail);
             createAccountMail.From = new MailAddress(distributorEmail);
             createAccountMail.Subject = "Your Agent Account";
-            createAccountMail.Body = "Dear Customer,<br /><br />This is your agent account to access our distributor system: <br />Username: <strong>" + AccountUserNameTxt.Text + "</strong><br />Password: <strong>" + AccountPasswordTxt.Text + "</strong><br /><br />Sincerely,<br />Distributor";
+            createAccountMail.Body = "Dear Customer,<br /><br />This is your agent account to access our distributor system: <br />Username: <strong>" + username + "</strong><br />Password: <strong>" + password + "</strong><br /><br />Sincerely,<br />Distributor";
             createAccountMail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient
             {

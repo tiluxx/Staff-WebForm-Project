@@ -102,7 +102,7 @@ namespace Agent_WebForm_Prodject.Controllers
             }
             else if (reportType.Equals("RevenueMonthlyReport"))
             {
-                wareHouseReceipt.GetRevenueMonthly();
+                res = wareHouseReceipt.GetRevenueMonthly();
                 title = "REVENUE MONTHLY";
             }
 
