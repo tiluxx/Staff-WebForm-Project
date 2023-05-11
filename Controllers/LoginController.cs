@@ -20,7 +20,9 @@ namespace Agent_WebForm_Prodject.Controllers
         {
             using (DistributorDBEntities db = new DistributorDBEntities())
             {
-                var staffAccounts = db.UserAccounts.Where(staff => staff.UserName == userAccountModel.UserName && staff.UserPassword == userAccountModel.UserPassword).FirstOrDefault();
+                var staffAccounts = db.UserAccounts.Where(
+                    staff => staff.UserName == userAccountModel.UserName &&
+                    staff.UserPassword == userAccountModel.UserPassword).FirstOrDefault();
                 if (staffAccounts == null)
                 {
                     userAccountModel.LoginMessageError = "Invalid account";

@@ -24,7 +24,7 @@ namespace Agent_WebForm_Prodject.Controllers
             WareHouseReceipt wareHouseReceipt = new WareHouseReceipt();
             List<WareHouseReceipt> res = wareHouseReceipt.SelectWarehouseReceiptQuery();
             ViewBag.WarehouseReceiptList = res;
-            return View();
+            return View("Index", res);
         }
 
         // GET: CreateWarehouseReceipt/Create
